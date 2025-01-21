@@ -1,0 +1,61 @@
+/* General Layout */
+.user-account {
+  display: flex;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f8f8f8;
+  color: #2c3e50;
+  height: 100vh;
+}
+
+/* Sidebar Menu */
+.sidebar {
+  width: 200px;
+  background-color: #ffffff;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.sidebar button {
+  background: none;
+  border: none;
+  padding: 10px 15px;
+  text-align: left;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #2c3e50;
+}
+
+.sidebar button:hover,
+.sidebar button.active {
+  background-color: #d4af37;
+  color: #ffffff;
+  border-radius: 5px;
+}
+
+/* Content Section */
+.content {
+  flex: 1;
+  padding: 20px;
+  background-color: #ffffff;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.content h2 {
+  color: #d4af37;
+  margin-bottom: 15px;
+}
+
+.content ul {
+  list-style: none;
+  padding: 0;
+}
+
+.content ul li {
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
