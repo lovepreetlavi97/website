@@ -1,20 +1,25 @@
+// App.js (or AppContent.js if you renamed it)
 import React from 'react';
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
-import Home from './components/Home/Homepage';
-import Festival from './components/Festival/FestivalComponent';
 import AppRoutes from './routes/Routes';
 import { ToastContainer } from 'react-toastify';
-function App() {
+import { useAuth } from './context/AuthContext';
+import { LoaderProvider } from "./context/LoaderContext"; // Import LoaderProvider
+function AppContent() {
+  const { isAuthenticated } = useAuth();
+  console.log(isAuthenticated, 'isAuthenticated');
+
   return (
     <div>
-      <Navbar />/
-      {/* <Home /> */}
+         {/* <LoaderProvider> */}
+      {isAuthenticated && <Navbar />} {/* Show Navbar only if authenticated */}
       <AppRoutes />
-      <Footer />
+      {isAuthenticated && <Footer />} {/* Show Footer only if authenticated */}
       <ToastContainer position="top-center" />
+      {/* </LoaderProvider> */}
     </div>
   );
 }
 
-export default App;
+export default AppContent;  // Default export for AppContent (or App if that’s what you use)

@@ -3,16 +3,23 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { resendOtpAPI, verifyOtpAPI } from "../../api/userAPI";
+import { Button, Card, CircularProgress, TextField } from "@mui/material";
 import "./VerifyOtp.css";
+import { useAuth } from "../../context/AuthContext";  // ✅ Import useAuth properly
+import { useLoader } from "../../context/LoaderContext";
+
 
 const VerifyOtp = () => {
+
   const [otp, setOtp] = useState("");
-  const [timer, setTimer] = useState(2);
+  const [timer, setTimer] = useState(30);
   const [isResendDisabled, setIsResendDisabled] = useState(false);
   const [isFirstVisit, setIsFirstVisit] = useState(true); // Track first-time visit
+  const [loading, setLoading] = useState(false); // To show loader on verify button
   const location = useLocation();
   const navigate = useNavigate();
   const { phoneNumber } = location.state || {}; // Retrieve phone number
+  const { login } = useAuth(); // Import useAuth
   useEffect(() => {
     // Show OTP toast only on first visit
     if (isFirstVisit) {
@@ -21,7 +28,6 @@ const VerifyOtp = () => {
       setIsFirstVisit(false); // Ensure it doesn't show again
     }
   }, [isFirstVisit]);
-
 
   useEffect(() => {
     let interval;
@@ -37,14 +43,13 @@ const VerifyOtp = () => {
         toast.error("Please enter the OTP.", { position: "top-right" });
         return;
       }
-  console.log(otp,"otpppppppppppp")
+      setLoading(true); // Show loader while verifying OTP
       const response = await verifyOtpAPI(otp); // Verify OTP with backend
-      console.log(response, 'responseresponseresponse');
-  
-      // Assuming response structure: { status: 200, message: "OTP verified", token: "jwt-token" }
-      if (response?.status === 200) {
+      console.log(response.status);
+      if (response.status === 200) {
         // Store JWT token in local storage
-        localStorage.setItem("authToken", response.token);
+    
+        login(response.data.user, response.data.token); // ✅ Call login to update context
         toast.success("OTP Verified Successfully!", { position: "top-right" });
         setTimeout(() => navigate("/home"), 2000); // Redirect to home
       } else {
@@ -53,9 +58,10 @@ const VerifyOtp = () => {
     } catch (error) {
       toast.error("Error verifying OTP. Please try again.", { position: "top-right" });
       console.error("Error during OTP verification:", error);
+    } finally {
+      setLoading(false); // Hide loader once done
     }
   };
-  
 
   const handleResendOtp = async () => {
     try {
@@ -63,10 +69,7 @@ const VerifyOtp = () => {
       setTimer(30); // Reset timer
       const response = await resendOtpAPI(phoneNumber); // Resend OTP API call
       if (response.status === 200) {
-   
-    console.log(response.data.otp,"responseresponseresponseresponseresponse")
         toast.info(`Your OTP is ${response.data.otp}`, { position: "top-right" });
-        // toast.success("OTP has been resent successfully.", { position: "top-right" });
       } else {
         toast.error(response.message || "Failed to resend OTP", { position: "top-right" });
       }
@@ -80,27 +83,50 @@ const VerifyOtp = () => {
   return (
     <div className="verify-page">
       <ToastContainer />
-      <h2>Verify OTP</h2>
-      <p>We have sent an OTP to {phoneNumber}</p>
-      <div className="verify-input-container">
-        <label>Enter OTP:</label>
-        <input
-          type="text"
-          value={otp}
-          onChange={(e) => setOtp(e.target.value)}
-          placeholder="Enter OTP"
-        />
-        <button onClick={handleVerifyOtp}>Verify OTP</button>
-        <div>
-          {timer > 0 ? (
-            <p>OTP expires in {timer}s</p>
-          ) : (
-            <button onClick={handleResendOtp} disabled={isResendDisabled}>
+      <Card className="verify-card">
+        <h2>Verify OTP</h2>
+        <p>We have sent an OTP to {phoneNumber}</p>
+
+        <div className="verify-input-container">
+          <TextField
+            label="Enter OTP"
+            variant="outlined"
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
+            fullWidth
+            size="small"
+            style={{ marginBottom: "20px" }}
+          />
+
+          <div className="button-container">
+            <Button
+              onClick={handleVerifyOtp}
+              disabled={!otp || otp.length !== 4 || loading}
+              variant="contained"
+              color="primary"
+            >
+              {loading ? <CircularProgress size={24} /> : "Verify OTP"}
+            </Button>
+            <Button
+              onClick={handleResendOtp}
+              disabled={isResendDisabled}
+              variant="text"
+              color="secondary"
+              style={{ marginTop: "10px", marginLeft: "10px" }}
+            >
               Resend OTP
-            </button>
-          )}
+            </Button>
+          </div>
+
+          <div>
+            {timer > 0 ? (
+              <p>OTP expires in {timer}s</p>
+            ) : (
+              <p>OTP expired. Please resend.</p>
+            )}
+          </div>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

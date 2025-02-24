@@ -42,7 +42,7 @@ const Navbar = () => {
       <div className="navbar-container">
         {/* Logo Section */}
         <div className="logo">
-          <Link to="/">
+          <Link to="/home">
             <h1 className="brand-title">Jewellers</h1>
           </Link>
         </div>

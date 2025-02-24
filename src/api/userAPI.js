@@ -7,9 +7,7 @@ import apiClient from './apiClient';
  */
 export const loginUser = async (phoneNumber) => {
   try {
-    const response = await apiClient.post('/user/login', {
-      phoneNumber,
-    });
+    const response = await apiClient.post('/user/login', phoneNumber);
     return response.data;
   } catch (error) {
     console.error('Error during loginUser API call:', error);
@@ -27,6 +25,8 @@ export const verifyOtpAPI = async (otp) => {
     const response = await apiClient.post('/user/verify-otp', {
       otp,
     });
+    
+    localStorage.setItem("authToken", response.data.token);
     return response.data;
   } catch (error) {
     console.error('Error during verifyOTP API call:', error);
