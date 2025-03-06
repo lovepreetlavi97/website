@@ -1,90 +1,126 @@
-/* Heart Icon in the Right Corner */
+/* Cards Listing Page Styles */
+.cards-listing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff8e7; /* Light golden background */
+}
+
+.heading {
+  font-size: 25px;
+  color: #b08c29; /* Golden Yellow */
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.card {
+  position: relative; /* Positioning for the wishlist icon */
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 2px solid #eee;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 15px 15px 5px;
+  font-weight: bold;
+}
+
+.card-description {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0 15px 15px;
+  line-height: 1.4;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  border-top: 1px solid #eee;
+}
+
+.card-price {
+  font-size: 1.2rem;
+  color: #b08c29; /* Golden Yellow */
+  font-weight: bold;
+}
+
+.card-button {
+  padding: 10px 15px;
+  background-color: #d4af37; /* Golden Yellow */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.card-button:hover {
+  background-color: #b08c29; /* Darker Golden Yellow */
+}
+
+
+@media (max-width: 768px) {
+  .cards-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+
+
+/* General styling remains the same */
 .wishlist-icon {
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: white;
   border-radius: 50%;
-  padding: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 5px 9px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: transform 0.3s ease, background-color 0.3s ease;
-  z-index: 10;
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .wishlist-icon:hover {
-  transform: scale(1.2);
-  background-color: rgba(255, 223, 186, 0.9);
+  transform: scale(1.1);
 }
 
-/* Updated Cart Item Styles */
-.cart-item {
-  position: relative;
-  background: linear-gradient(145deg, #ffffff, #f0f0f0);
-  border: 1px solid #d4af37;
-  border-radius: 15px;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1), -4px -4px 8px rgba(255, 255, 255, 0.5);
-  overflow: hidden;
-  width: 300px;
-  text-align: center;
-  padding: 15px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.wishlist-icon i {
+  font-size: 20px;
+  margin-top: 5px;
+  color: #d4af37; /* Light gray for inactive heart */
 }
 
-.cart-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-/* Image Styling */
-.cart-item-image {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  transition: transform 0.3s ease;
-}
-
-.cart-item:hover .cart-item-image {
-  transform: scale(1.05);
-}
-
-/* Button Group */
-.button-group {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
-/* Remove Button (Red) */
-.remove-button {
-  background-color: #e74c3c;
-  color: #ffffff;
-  padding: 5px 10px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.remove-button:hover {
-  background-color: #c0392b;
-  transform: scale(1.05);
-}
-
-/* Add to Cart Button (Golden) */
-.add-to-cart-button {
-  background-color: #d4af37;
-  color: #ffffff;
-  padding: 5px 15px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.add-to-cart-button:hover {
-  background-color: #b08c29;
-  transform: scale(1.05);
+.wishlist-icon.active i {
+  color: #d4af37; /* Dark red for active heart */
 }

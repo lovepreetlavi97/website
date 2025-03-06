@@ -42,7 +42,7 @@ const Navbar = () => {
       <div className="navbar-container">
         {/* Logo Section */}
         <div className="logo">
-          <Link to="/home">
+          <Link to="/">
             <h1 className="brand-title">Jewellers</h1>
           </Link>
         </div>
@@ -64,17 +64,18 @@ const Navbar = () => {
 
         {/* Right Links Section */}
         <div className="right-links">
-        <Link to="/account" className="orders-link">
-            <i className="fas fa-box"></i>
-            <span className="link-text">Account</span>
-          </Link>
+    
           <Link to="/wishlist" className="wishlist-link">
             <i className="fas fa-heart"></i>
-            <span className="link-text">Wishlist</span>
+            {/* <span className="link-text">Wishlist</span> */}
           </Link>
           <Link to="/cart" className="cart-link">
             <i className="fas fa-shopping-cart"></i>
-            <span className="link-text">Cart</span>
+            {/* <span className="link-text">Cart</span> */}
+          </Link>
+          <Link to="/account" className="orders-link">
+          <i class="fa-solid fa-circle-user"></i>
+            {/* <span className="link-text">Account</span> */}
           </Link>
    
         </div>

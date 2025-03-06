@@ -1,78 +1,90 @@
 import React, { useState } from 'react';
-import '../Cart/CartItem.css';
-import { FaHeart } from 'react-icons/fa';
+import './Wishlist.css';
+import qwerty from '../../assets/images/qwerty.jpg';
+import Rating from "@mui/material/Rating";
+import Stack from "@mui/material/Stack";
 
-const WishlistPage = () => {
-  const initialWishlistItems = [
+const CardsListing = () => {
+  const [wishlist, setWishlist] = useState([]); // Wishlist state
+
+  const products = [
     {
       id: 1,
-      name: 'Gold Necklace',
-      price: 2500,
-      image: 'https://i.ytimg.com/vi/VD0BPupbxeg/maxresdefault.jpg',
+      name: 'Elegant Gold Necklace',
+      price: '$1,200',
+      image: 'gold-necklace.jpg',
+      description: 'A stunning gold necklace perfect for any occasion.',
     },
     {
       id: 2,
-      name: 'Silver Earrings',
-      price: 800,
-      image: 'https://i.ytimg.com/vi/VD0BPupbxeg/maxresdefault.jpg',
+      name: 'Silver Bracelet',
+      price: '$300',
+      image: 'silver-bracelet.jpg',
+      description: 'A stylish silver bracelet with intricate detailing.',
     },
     {
       id: 3,
-      name: 'Diamond Ring',
-      price: 5000,
-      image: 'https://i.ytimg.com/vi/VD0BPupbxeg/maxresdefault.jpg',
+      name: 'Gold Earrings',
+      price: '$450',
+      image: 'gold-earrings.jpg',
+      description: 'Beautiful gold earrings that add charm to your attire.',
+    },
+    {
+      id: 4,
+      name: 'Silver Pendant',
+      price: '$250',
+      image: 'silver-pendant.jpg',
+      description: 'A sleek silver pendant with an elegant design.',
     },
   ];
 
-  const [wishlistItems, setWishlistItems] = useState(initialWishlistItems);
-
-  const removeItem = (id) => {
-    setWishlistItems(wishlistItems.filter((item) => item.id !== id));
-  };
-
-  const moveToCart = (id) => {
-    console.log(`Item with id ${id} moved to cart.`);
-    removeItem(id);
+  const toggleWishlist = (id) => {
+    setWishlist((prevWishlist) =>
+      prevWishlist.includes(id)
+        ? prevWishlist.filter((item) => item !== id) // Remove from wishlist
+        : [...prevWishlist, id] // Add to wishlist
+    );
   };
 
   return (
-    <div className="cart-page">
-      <h1>Your Wishlist</h1>
-      <div className="cart-container">
-        {wishlistItems.map((item) => (
-          <div className="cart-item" key={item.id}>
-            <div className="wishlist-icon">
-              <FaHeart size={20} color="#d4af37" />
+    <div className="cards-listing">
+      <h2 className="heading">Wish List</h2>
+      <div className="cards-container">
+        {products.map((product) => (
+          <div key={product.id} className="card">
+            <div
+              className={`wishlist-icon ${
+                wishlist.includes(product.id) ? 'active' : ''
+              }`}
+              onClick={() => toggleWishlist(product.id)}
+            >
+              <i
+                className={`fa-heart ${
+                  wishlist.includes(product.id) ? 'fa-regular' : 'fa-solid'
+                }`}
+              ></i>
             </div>
-            <img src={item.image} alt={item.name} className="cart-item-image" />
-            <div className="cart-item-details">
-              <h2>{item.name}</h2>
-              <p>Price: ₹{item.price.toLocaleString()}</p>
-              <div className="button-group">
-                <button
-                  className="remove-button"
-                  onClick={() => removeItem(item.id)}
-                >
-                  Remove
-                </button>
-                <button
-                  className="add-to-cart-button"
-                  onClick={() => moveToCart(item.id)}
-                >
-                  Add to Cart
-                </button>
-              </div>
+            <img src={qwerty} alt={product.name} className="card-image" />
+            <h3 className="card-title">{product.name}</h3>
+            <p className="card-description">{product.description}</p>
+            <div className="card-footer">
+              <span className="card-price">{product.price}</span>
+              <Stack spacing={1} className="rating-container">
+            <Rating
+              name="half-rating-read"
+              defaultValue={4.5}
+              precision={0.5}
+              readOnly
+              sx={{ color: "#D4AF37" }}
+            />
+          </Stack>
+              <button className="card-button">Add To Cart</button>
             </div>
           </div>
         ))}
       </div>
-      {wishlistItems.length === 0 && (
-        <p style={{ textAlign: 'center', color: '#2c3e50' }}>
-          Your wishlist is empty.
-        </p>
-      )}
     </div>
   );
 };
 
-export default WishlistPage;
+export default CardsListing;
