@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <circle cx="100" cy="100" r="95" fill="#f8e8e0" />
+  <text x="100" y="110" font-family="Arial" font-size="16" text-anchor="middle" fill="#c97f5e">Akshaya Tritiya</text>
+  <circle cx="100" cy="80" r="30" fill="#f8d56e" />
+  <circle cx="70" cy="80" r="30" fill="#f8a56e" />
+</svg>

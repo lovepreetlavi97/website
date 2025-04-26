@@ -1,0 +1,20 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" fill="#FDF4F0"/>
+  <g transform="translate(60, 20)">
+    <!-- Left Earring -->
+    <circle cx="20" cy="30" r="8" fill="#C97F5E" />
+    <path d="M20 38V60C20 66.6274 15.5228 72 10 72C4.47715 72 0 66.6274 0 60C0 53.3726 4.47715 48 10 48C11.5 48 13 48.3 14.3 49" stroke="#C97F5E" stroke-width="2" />
+    <circle cx="10" cy="60" r="6" fill="#C97F5E" opacity="0.6" />
+    
+    <!-- Right Earring -->
+    <circle cx="60" cy="30" r="8" fill="#C97F5E" />
+    <path d="M60 38V60C60 66.6274 55.5228 72 50 72C44.4772 72 40 66.6274 40 60C40 53.3726 44.4772 48 50 48C51.5 48 53 48.3 54.3 49" stroke="#C97F5E" stroke-width="2" />
+    <circle cx="50" cy="60" r="6" fill="#C97F5E" opacity="0.6" />
+    
+    <!-- Connecting Line -->
+    <line x1="20" y1="15" x2="60" y2="15" stroke="#C97F5E" stroke-width="1" stroke-dasharray="2 2" />
+    
+    <!-- Labels -->
+    <text x="40" y="100" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#C97F5E">Crystal Earrings</text>
+  </g>
+</svg>

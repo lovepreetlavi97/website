@@ -1,56 +1,29 @@
 {
-  "name": "my-react-app",
+  "name": "website-giva.co",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
-    "@fortawesome/fontawesome-free": "^6.7.1",
-    "@mui/icons-material": "^6.4.3",
-    "@mui/material": "^6.4.3",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "axios": "^1.7.9",
-    "bootstrap": "^5.3.3",
-    "font-awesome": "^4.7.0",
-    "framer-motion": "^12.4.2",
-    "libphonenumber-js": "^1.11.19",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-icons": "^5.4.0",
-    "react-phone-input-2": "^2.15.1",
-    "react-router-dom": "^7.1.0",
-    "react-scripts": "5.0.1",
-    "react-select": "^5.10.0",
-    "react-slick": "^0.30.2",
-    "react-toastify": "^11.0.2",
-    "slick-carousel": "^1.8.1",
-    "web-vitals": "^2.1.4",
-    "world-countries": "^5.0.0"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "dependencies": {
+    "lucide-react": "^0.503.0",
+    "next": "15.3.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4.1.4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.1",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.4",
+    "typescript": "^5"
   }
 }
