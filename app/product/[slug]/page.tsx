@@ -3,50 +3,76 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { Heart, Share2, Star } from 'lucide-react';
-import Footer from '@/app/components/Footer';
-import Navbar from '@/app/components/Navbar';
+import { Heart, Share2, Star, ShoppingCart } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '@/app/store/features/cartSlice';
+import { getProductBySlug } from '@/app/data/products';
 
-// Mock product data - in a real app this would come from an API
-const productData = {
-  id: 1,
-  name: "Cherry Blossom Silver Ring",
-  price: 1999,
-  originalPrice: 2499,
-  rating: 4.8,
-  reviewCount: 156,
-  description: "This elegant Cherry Blossom Silver Ring is crafted with precision and care. The delicate petals create a stunning floral design that captures the beauty of nature. Made from 925 sterling silver, this ring is perfect for everyday wear or special occasions.",
-  specs: [
-    "Material: 925 Sterling Silver",
-    "Finish: Rhodium Plated",
-    "Dimension: Adjustable Band",
-    "Weight: 3.2 grams"
-  ],
-  image: "/images/product-1.jpg",
-  images: [
-    "/images/product-1.jpg",
-    "/images/product-2.jpg",
-    "/images/product-3.jpg",
-    "/images/product-4.jpg"
-  ],
-  slug: "cherry-blossom-silver-ring"
-};
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  originalPrice: number;
+  rating: number;
+  reviewCount: number;
+  description: string;
+  specs: string[];
+  image: string;
+  images: string[];
+  slug: string;
+}
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
   const [selectedImage, setSelectedImage] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const dispatch = useDispatch();
   
   // In a real application, fetch product based on slug
-  const product = productData;
+  const product = getProductBySlug(params.slug) || {
+    id: "1",
+    name: "Cherry Blossom Silver Ring",
+    price: 1999,
+    originalPrice: 2499,
+    rating: 4.8,
+    reviewCount: 156,
+    description: "This elegant Cherry Blossom Silver Ring is crafted with precision and care. The delicate petals create a stunning floral design that captures the beauty of nature. Made from 925 sterling silver, this ring is perfect for everyday wear or special occasions.",
+    specs: [
+      "Material: 925 Sterling Silver",
+      "Finish: Rhodium Plated",
+      "Dimension: Adjustable Band",
+      "Weight: 3.2 grams"
+    ],
+    image: "/images/product-1.jpg",
+    images: [
+      "/images/product-1.jpg",
+      "/images/product-2.jpg",
+      "/images/product-3.jpg",
+      "/images/product-4.jpg"
+    ],
+    slug: "cherry-blossom-silver-ring"
+  } as Product;
+
+  const handleAddToCart = () => {
+    dispatch(addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      originalPrice: product.originalPrice,
+      image: product.image,
+      secondaryImage: product.images[0],
+      slug: product.slug,
+      quantity
+    }));
+  };
 
   return (
-    <>
-      <Navbar />
+    <div className="min-h-screen bg-gradient-to-b from-pink-50 to-white">
       <main className="container mx-auto px-4 py-8">
         <div className="mb-6">
           <nav className="flex text-sm">
             <Link href="/" className="text-gray-500 hover:text-pink-500">Home</Link>
             <span className="mx-2 text-gray-400">/</span>
-            <Link href="/jewelry" className="text-gray-500 hover:text-pink-500">Jewelry</Link>
+            <Link href="/collections/all" className="text-gray-500 hover:text-pink-500">Collections</Link>
             <span className="mx-2 text-gray-400">/</span>
             <span className="text-gray-900">{product.name}</span>
           </nav>
@@ -62,10 +88,11 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
+                priority
               />
             </div>
             <div className="flex space-x-2">
-              {product.images.map((image, index) => (
+              {product.images.map((image: string, index: number) => (
                 <button 
                   key={index}
                   onClick={() => setSelectedImage(index)}
@@ -78,6 +105,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                     alt={`${product.name} view ${index + 1}`}
                     fill
                     className="object-cover"
+                    sizes="80px"
                   />
                 </button>
               ))}
@@ -116,14 +144,38 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
             <div className="space-y-1 pt-4 border-t border-gray-200">
               <h3 className="text-sm font-medium text-gray-900">Specifications:</h3>
               <ul className="list-disc pl-5 text-sm text-gray-700 space-y-1">
-                {product.specs.map((spec, index) => (
+                {product.specs.map((spec: string, index: number) => (
                   <li key={index}>{spec}</li>
                 ))}
               </ul>
             </div>
 
             <div className="pt-6 border-t border-gray-200 space-y-6">
-              <AddToCart product={product} className="w-full" />
+              {/* Quantity Selector */}
+              <div className="flex items-center space-x-4">
+                <label htmlFor="quantity" className="text-sm font-medium text-gray-700">Quantity:</label>
+                <select
+                  id="quantity"
+                  value={quantity}
+                  onChange={(e) => setQuantity(Number(e.target.value))}
+                  className="rounded-md border-gray-300 text-sm focus:border-pink-500 focus:ring-pink-500"
+                >
+                  {[1, 2, 3, 4, 5].map((num) => (
+                    <option key={num} value={num}>
+                      {num}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Add to Cart Button */}
+              <button
+                onClick={handleAddToCart}
+                className="w-full bg-pink-600 text-white py-3 px-4 rounded-md hover:bg-pink-700 transition-colors flex items-center justify-center"
+              >
+                <ShoppingCart className="w-5 h-5 mr-2" />
+                Add to Cart
+              </button>
               
               <div className="flex space-x-4">
                 <button className="flex items-center text-gray-500 hover:text-pink-500">
@@ -139,9 +191,14 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
           </div>
         </div>
 
-        {/* You can add more sections here like "Related Products", "Customer Reviews", etc. */}
+        {/* Related Products Section */}
+        <div className="mt-16">
+          <h2 className="text-2xl font-bold mb-8">You May Also Like</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {/* Add related products here */}
+          </div>
+        </div>
       </main>
-      <Footer />
-    </>
+    </div>
   );
 } 

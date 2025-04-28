@@ -2,13 +2,207 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Search, ShoppingBag, Heart, User, ChevronLeft, ChevronRight } from "lucide-react"
+import { Search, ShoppingBag, Heart, User, ChevronLeft, ChevronRight, ChevronDown, ShoppingCart, Menu, X } from "lucide-react"
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+
+// Add these interfaces before the menuData definition
+interface SubMenuItem {
+  title: string;
+  path: string;
+  submenu?: SubMenuItem[];
+}
+
+interface MenuItem {
+  title: string;
+  path: string;
+  submenu?: SubMenuItem[];
+}
+
+// Update the menuData type
+const menuData: MenuItem[] = [
+  {
+    title: "Shop by Category",
+    path: "/collections/shop",
+    submenu: [
+      { 
+        title: "All",
+        path: "/collections/all"
+      },
+      {
+        title: "Rings",
+        path: "/collections/rings",
+        submenu: [
+          { title: "All Rings", path: "/collections/all-rings" },
+          { title: "Engagement Rings", path: "/collections/engagement-rings" },
+          { title: "Couple Rings", path: "/collections/couple-rings" }
+        ]
+      },
+      {
+        title: "Necklaces & Pendants",
+        path: "/collections/necklaces",
+        submenu: [
+          { 
+            title: "All Necklaces & Pendants",
+            path: "/collections/all-necklaces"
+          },
+          {
+            title: "Shop by Price",
+            path: "/collections/necklaces/by-price",
+            submenu: [
+              { title: "Under 1500", path: "/collections/necklaces/under-1500" },
+              { title: "1500 to 3000", path: "/collections/necklaces/1500-3000" },
+              { title: "3000 to 5000", path: "/collections/necklaces/3000-5000" },
+              { title: "Above 5000", path: "/collections/necklaces/above-5000" }
+            ]
+          },
+          {
+            title: "Shop by Metal",
+            path: "/collections/necklaces/by-metal",
+            submenu: [
+              { title: "925 Silver", path: "/collections/necklaces/silver" },
+              { title: "Pure Gold", path: "/collections/necklaces/gold" }
+            ]
+          },
+          {
+            title: "Shop by Colour",
+            path: "/collections/necklaces/by-color",
+            submenu: [
+              { title: "Silver", path: "/collections/necklaces/silver-color" },
+              { title: "Rose Gold", path: "/collections/necklaces/rose-gold" },
+              { title: "Gold Plated", path: "/collections/necklaces/gold-plated" },
+              { title: "Oxidised Silver", path: "/collections/necklaces/oxidised" }
+            ]
+          },
+          {
+            title: "Shop by Style",
+            path: "/collections/necklaces/by-style",
+            submenu: [
+              { title: "Office", path: "/collections/necklaces/office" },
+              { title: "Party", path: "/collections/necklaces/party" },
+              { title: "Everyday", path: "/collections/necklaces/everyday" }
+            ]
+          }
+        ]
+      },
+      {
+        title: "Bracelets",
+        path: "/collections/bracelets",
+        submenu: [
+          { title: "All Bracelets", path: "/collections/all-bracelets" },
+          { title: "Chain Bracelets", path: "/collections/chain-bracelets" },
+          { title: "Tennis Bracelets", path: "/collections/tennis-bracelets" }
+        ]
+      },
+      {
+        title: "Earrings",
+        path: "/collections/earrings",
+        submenu: [
+          { title: "All Earrings", path: "/collections/all-earrings" },
+          { title: "Studs", path: "/collections/studs" },
+          { title: "Hoops", path: "/collections/hoops" }
+        ]
+      },
+      { 
+        title: "Anklets",
+        path: "/collections/anklets"
+      },
+      {
+        title: "Other Categories",
+        path: "/collections/others",
+        submenu: [
+          { title: "Nose Pins", path: "/collections/nose-pins" },
+          { title: "Toe Rings", path: "/collections/toe-rings" }
+        ]
+      }
+    ]
+  },
+  {
+    title: "Gold with Lab Diamonds",
+    path: "/collections/gold",
+    submenu: [
+      { title: "Gold Necklaces", path: "/collections/gold-necklaces" },
+      { title: "Gold Rings", path: "/collections/gold-rings" },
+      { title: "Gold Earrings", path: "/collections/gold-earrings" },
+      { title: "Gold Bracelets", path: "/collections/gold-bracelets" },
+    ]
+  },
+  {
+    title: "Personalised Jewellery",
+    path: "/collections/personalised",
+    submenu: [
+      { title: "Name Necklaces", path: "/collections/name-necklaces" },
+      { title: "Initial Rings", path: "/collections/initial-rings" },
+      { title: "Couple Bands", path: "/collections/couple-bands" },
+      { title: "Custom Designs", path: "/collections/custom-designs" },
+    ]
+  },
+  {
+    title: "Gift Store",
+    path: "/collections/gift",
+    submenu: [
+      { title: "Birthday Gifts", path: "/collections/birthday-gifts" },
+      { title: "Anniversary Gifts", path: "/collections/anniversary-gifts" },
+      { title: "Wedding Gifts", path: "/collections/wedding-gifts" },
+      { title: "Gift Cards", path: "/collections/gift-cards" },
+    ]
+  },
+  {
+    title: "Men's Jewellery",
+    path: "/collections/mens",
+    submenu: [
+      { title: "Men's Chains", path: "/collections/mens-chains" },
+      { title: "Men's Bracelets", path: "/collections/mens-bracelets" },
+      { title: "Men's Rings", path: "/collections/mens-rings" },
+      { title: "Cufflinks", path: "/collections/cufflinks" },
+    ]
+  },
+  {
+    title: "Latest Collections",
+    path: "/collections/latest",
+    submenu: [
+      { title: "New Arrivals", path: "/collections/new-arrivals" },
+      { title: "Trending Now", path: "/collections/trending" },
+      { title: "Best Sellers", path: "/collections/best-sellers" },
+      { title: "Limited Edition", path: "/collections/limited-edition" },
+    ]
+  },
+  {
+    title: "More at GIVA",
+    path: "/more",
+    submenu: [
+      { title: "About Us", path: "/about" },
+      { title: "Contact Us", path: "/contact" },
+      { title: "Blog", path: "/blog" },
+      { title: "Careers", path: "/careers" },
+    ]
+  }
+];
+
+// Update component interfaces
+interface DesktopSubmenuProps {
+  items: SubMenuItem[];
+  parentPath?: string;
+}
+
+interface MobileSubmenuProps {
+  items: SubMenuItem[];
+  level?: number;
+  parentPath?: string;
+}
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
   const [isMobileMenuExpanded, setIsMobileMenuExpanded] = useState(false);
-
+  const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null);
+  const [hoveredMenu, setHoveredMenu] = useState<number | null>(null);
+  const [activeSubSubMenu, setActiveSubSubMenu] = useState<string | null>(null);
+  const [hoveredSubMenu, setHoveredSubMenu] = useState<string | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const { totalItems: cartItems } = useSelector((state: RootState) => state.cart);
+  const { totalItems: wishlistItems } = useSelector((state: RootState) => state.wishlist);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -32,6 +226,76 @@ export default function Navbar() {
     // Clean up
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Desktop submenu component
+  const DesktopSubmenu: React.FC<DesktopSubmenuProps> = ({ items, parentPath = '' }) => {
+    return (
+      <div className="absolute left-full top-0 bg-white shadow-lg rounded-lg py-2 w-48 z-50">
+        {items.map((item, index) => (
+          <div
+            key={`${parentPath}-${index}`}
+            className="relative group/submenu"
+            onMouseEnter={() => setHoveredSubMenu(`${parentPath}-${index}`)}
+            onMouseLeave={() => setHoveredSubMenu(null)}
+          >
+            <Link
+              href={item.path}
+              className="block px-4 py-2 hover:bg-[#f8e8e0] hover:text-[#c97f5e] text-gray-700 flex items-center justify-between"
+            >
+              {item.title}
+              {item.submenu && <ChevronRight className="h-4 w-4" />}
+            </Link>
+            {item.submenu && hoveredSubMenu === `${parentPath}-${index}` && (
+              <DesktopSubmenu items={item.submenu} parentPath={`${parentPath}-${index}`} />
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  // Mobile submenu component
+  const MobileSubmenu: React.FC<MobileSubmenuProps> = ({ items, level = 0, parentPath = '' }) => {
+    return (
+      <div className={`pl-${level * 4} pb-3`}>
+        {items.map((item, index) => (
+          <div key={`${parentPath}-${index}`}>
+            <div className="flex justify-between items-center py-2">
+              <Link
+                href={item.path}
+                className="text-gray-600 hover:text-[#c97f5e]"
+              >
+                {item.title}
+              </Link>
+              {item.submenu && (
+                <button
+                  onClick={() => setActiveSubSubMenu(
+                    activeSubSubMenu === `${parentPath}-${index}` 
+                      ? null 
+                      : `${parentPath}-${index}`
+                  )}
+                  className="p-1"
+                >
+                  <ChevronRight 
+                    className={`h-4 w-4 text-gray-500 transition-transform ${
+                      activeSubSubMenu === `${parentPath}-${index}` ? 'rotate-90' : ''
+                    }`}
+                  />
+                </button>
+              )}
+            </div>
+            {item.submenu && activeSubSubMenu === `${parentPath}-${index}` && (
+              <MobileSubmenu 
+                items={item.submenu} 
+                level={level + 1} 
+                parentPath={`${parentPath}-${index}`}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
@@ -130,48 +394,30 @@ export default function Navbar() {
           <div className="px-4 py-1 bg-gray-50">
             <nav>
               <ul className="flex flex-col text-sm text-gray-700">
-                <li className="py-3 border-b border-gray-200 flex justify-between items-center">
-                  <span>Shop by Category</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </li>
-                <li className="py-3 border-b border-gray-200 flex justify-between items-center">
-                  <span>Gold with Lab Diamonds</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </li>
-                <li className="py-3 border-b border-gray-200 flex justify-between items-center">
-                  <span>Personalised Jewellery</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </li>
-                <li className="py-3 border-b border-gray-200 flex justify-between items-center">
-                  <span>Gift Store</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </li>
-                <li className="py-3 border-b border-gray-200 flex justify-between items-center">
-                  <span>Men's Jewellery</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </li>
-                <li className="py-3 border-b border-gray-200 flex justify-between items-center">
-                  <span>Latest Collections</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </li>
-                <li className="py-3 border-b border-gray-200 flex justify-between items-center">
-                  <span>More at GIVA</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </li>
+                {menuData.map((item, index) => (
+                  <li key={index} className="border-b border-gray-200">
+                    <div className="py-3 flex justify-between items-center">
+                      <Link href={item.path}>
+                        <span>{item.title}</span>
+                      </Link>
+                      {item.submenu && (
+                        <button
+                          onClick={() => setActiveSubmenu(activeSubmenu === index ? null : index)}
+                          className="p-1"
+                        >
+                          <ChevronRight 
+                            className={`h-4 w-4 text-gray-500 transition-transform ${
+                              activeSubmenu === index ? 'rotate-90' : ''
+                            }`}
+                          />
+                        </button>
+                      )}
+                    </div>
+                    {activeSubmenu === index && item.submenu && (
+                      <MobileSubmenu items={item.submenu} parentPath={index.toString()} />
+                    )}
+                  </li>
+                ))}
               </ul>
             </nav>
           </div>
@@ -184,10 +430,10 @@ export default function Navbar() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
               </div>
-              <div>
+              <Link href="/account/login">
                 <h3 className="font-medium text-gray-800">Guest User</h3>
                 <p className="text-xs text-gray-600">Tap to Login/Sign up</p>
-              </div>
+              </Link>
             </div>
           </div>
         </div>
@@ -218,18 +464,18 @@ export default function Navbar() {
             {/* Mobile Menu Button */}
             <div className="md:hidden">
               <button
-                onClick={toggleMobileMenu}
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="text-gray-600 focus:outline-none"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
                 </svg>
               </button>
             </div>
 
             {/* Icons */}
             <div className="hidden md:flex items-center space-x-6">
-              <Link href="/account" className="flex flex-col items-center text-xs">
+              <Link href="/account/login" className="flex flex-col items-center text-xs">
                 <User className="h-7 w-7" />
                 <span>ACCOUNT</span>
               </Link>
@@ -247,18 +493,47 @@ export default function Navbar() {
           {/* Navigation Menu - Desktop */}
           <nav className="container mx-auto mt-4 hidden md:block">
             <ul className="flex justify-center space-x-8 text-sm">
-              <li><Link href="/shop" className="hover:text-[#c97f5e]">Shop by Category</Link></li>
-              <li><Link href="/gold" className="hover:text-[#c97f5e]">Gold with Lab Diamonds</Link></li>
-              <li><Link href="/personalised" className="hover:text-[#c97f5e]">Personalised Jewellery</Link></li>
-              <li><Link href="/gift" className="hover:text-[#c97f5e]">Gift Store</Link></li>
-              <li><Link href="/mens" className="hover:text-[#c97f5e]">Men's Jewellery</Link></li>
-              <li><Link href="/collections" className="hover:text-[#c97f5e]">Latest Collections</Link></li>
-              <li><Link href="/more" className="hover:text-[#c97f5e]">More at GIVA</Link></li>
+              {menuData.map((item, index) => (
+                <li
+                  key={index}
+                  className="relative group"
+                  onMouseEnter={() => setHoveredMenu(index)}
+                  onMouseLeave={() => setHoveredMenu(null)}
+                >
+                  <Link href={item.path} className="hover:text-[#c97f5e] flex items-center gap-1">
+                    {item.title}
+                    <ChevronDown className="h-4 w-4" />
+                  </Link>
+                  {hoveredMenu === index && item.submenu && (
+                    <div className="absolute top-full left-0 bg-white shadow-lg rounded-lg py-2 w-48 z-50">
+                      {item.submenu.map((subitem, subindex) => (
+                        <div
+                          key={subindex}
+                          className="relative group/submenu"
+                          onMouseEnter={() => setHoveredSubMenu(`${index}-${subindex}`)}
+                          onMouseLeave={() => setHoveredSubMenu(null)}
+                        >
+                          <Link
+                            href={subitem.path}
+                            className="block px-4 py-2 hover:bg-[#f8e8e0] hover:text-[#c97f5e] text-gray-700 flex items-center justify-between"
+                          >
+                            {subitem.title}
+                            {subitem.submenu && <ChevronRight className="h-4 w-4" />}
+                          </Link>
+                          {subitem.submenu && hoveredSubMenu === `${index}-${subindex}` && (
+                            <DesktopSubmenu items={subitem.submenu} parentPath={`${index}-${subindex}`} />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </li>
+              ))}
             </ul>
           </nav>
 
           {/* Mobile Menu Dropdown */}
-          <div className={`absolute top-full left-0 right-0 bg-white shadow-md z-50 transition-all duration-300 ease-in-out ${mobileMenuOpen ? 'max-h-[calc(100vh-4rem)] overflow-y-auto' : 'max-h-0 overflow-hidden'}`}>
+          <div className={`absolute top-full left-0 right-0 bg-white shadow-md z-50 transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-[calc(100vh-4rem)] overflow-y-auto' : 'max-h-0 overflow-hidden'}`}>
             {/* Search Bar Mobile */}
             <div className="p-4 border-b border-gray-100">
               <div className="relative w-full">
@@ -278,13 +553,30 @@ export default function Navbar() {
             {/* Navigation Menu - Mobile */}
             <nav className="py-2">
               <ul className="flex flex-col text-sm">
-                <li><Link href="/shop" className="block px-4 py-2 hover:bg-[#f8e8e0] hover:text-[#c97f5e]">Shop by Category</Link></li>
-                <li><Link href="/gold" className="block px-4 py-2 hover:bg-[#f8e8e0] hover:text-[#c97f5e]">Gold with Lab Diamonds</Link></li>
-                <li><Link href="/personalised" className="block px-4 py-2 hover:bg-[#f8e8e0] hover:text-[#c97f5e]">Personalised Jewellery</Link></li>
-                <li><Link href="/gift" className="block px-4 py-2 hover:bg-[#f8e8e0] hover:text-[#c97f5e]">Gift Store</Link></li>
-                <li><Link href="/mens" className="block px-4 py-2 hover:bg-[#f8e8e0] hover:text-[#c97f5e]">Men's Jewellery</Link></li>
-                <li><Link href="/collections" className="block px-4 py-2 hover:bg-[#f8e8e0] hover:text-[#c97f5e]">Latest Collections</Link></li>
-                <li><Link href="/more" className="block px-4 py-2 hover:bg-[#f8e8e0] hover:text-[#c97f5e]">More at GIVA</Link></li>
+                {menuData.map((item, index) => (
+                  <li key={index} className="border-b border-gray-200">
+                    <div className="py-3 flex justify-between items-center">
+                      <Link href={item.path}>
+                        <span>{item.title}</span>
+                      </Link>
+                      {item.submenu && (
+                        <button
+                          onClick={() => setActiveSubmenu(activeSubmenu === index ? null : index)}
+                          className="p-1"
+                        >
+                          <ChevronRight 
+                            className={`h-4 w-4 text-gray-500 transition-transform ${
+                              activeSubmenu === index ? 'rotate-90' : ''
+                            }`}
+                          />
+                        </button>
+                      )}
+                    </div>
+                    {activeSubmenu === index && item.submenu && (
+                      <MobileSubmenu items={item.submenu} parentPath={index.toString()} />
+                    )}
+                  </li>
+                ))}
               </ul>
             </nav>
 
