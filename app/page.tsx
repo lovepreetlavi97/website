@@ -50,14 +50,15 @@ export default function Home() {
       linkText: "EXPLORE"
     }
   ];
-  const goToSlide = (index: number) => {
+  const goToSlide = useCallback((index: number) => {
     setCurrentSlide(index);
-  };
+  }, []);
   
   const nextSlide = useCallback(() => {
     const newIndex = (currentSlide + 1) % slides.length;
     goToSlide(newIndex);
   }, [currentSlide, slides.length, goToSlide]);
+  
   
   useEffect(() => {
     const interval = setInterval(() => {
@@ -68,12 +69,12 @@ export default function Home() {
   }, [nextSlide]);
   
 
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-    if (sliderRef.current) {
-      sliderRef.current.style.transform = `translateX(-${index * 100}%)`;
-    }
-  };
+  // const goToSlide = (index: number) => {
+  //   setCurrentSlide(index);
+  //   if (sliderRef.current) {
+  //     sliderRef.current.style.transform = `translateX(-${index * 100}%)`;
+  //   }
+  // };
 
 
 
@@ -255,7 +256,7 @@ export default function Home() {
       <div className="bg-gradient-to-r from-pink-100 to-pink-200 py-6">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 md:flex-row">
           <div className="text-center md:text-left">
-            <h2 className="text-2xl font-bold text-pink-800">Mother's Day Special</h2>
+            <h2 className="text-2xl font-bold text-pink-800">Mother&rsquo;s Day Special</h2>
             <p className="mt-2 text-pink-700">Celebrate with our exclusive collection</p>
             <Link href={`/collections/mothers-day-special`}>
               <button className="mt-4 rounded-full bg-pink-600 px-6 py-2 font-medium text-white hover:bg-pink-700 cursor-pointer">
@@ -265,7 +266,7 @@ export default function Home() {
           </div>
                 <Image 
             src="https://www.giva.co/cdn/shop/files/Frame_1000009460_1.jpg?v=1744794541&width=1500"
-            alt="Mother's Day Special"
+            alt="Mother&rsquo;s Day Special"
             width={300}
             height={200}
             className="h-auto w-full max-w-xs rounded-lg object-cover"
