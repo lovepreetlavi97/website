@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Search, ShoppingBag, Heart, User, ChevronLeft, ChevronRight, ChevronDown, ShoppingCart, Menu, X } from "lucide-react"
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/store';
+import { Search, ShoppingBag, Heart, User,  ChevronRight, ChevronDown} from "lucide-react"
+
 
 // Add these interfaces before the menuData definition
 interface SubMenuItem {
@@ -192,7 +191,7 @@ interface MobileSubmenuProps {
 }
 
 export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
   const [isMobileMenuExpanded, setIsMobileMenuExpanded] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null);
@@ -200,13 +199,13 @@ export default function Navbar() {
   const [activeSubSubMenu, setActiveSubSubMenu] = useState<string | null>(null);
   const [hoveredSubMenu, setHoveredSubMenu] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const { totalItems: cartItems } = useSelector((state: RootState) => state.cart);
-  const { totalItems: wishlistItems } = useSelector((state: RootState) => state.wishlist);
+  // const [isSearchOpen, setIsSearchOpen] = useState(false);
+  // const { totalItems: cartItems } = useSelector((state: RootState) => state.cart);
+  // const { totalItems: wishlistItems } = useSelector((state: RootState) => state.wishlist);
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
+  // const toggleMobileMenu = () => {
+  //   setMobileMenuOpen(!mobileMenuOpen);
+  // };
 
   const toggleMobileExpandedMenu = () => {
     setIsMobileMenuExpanded(!isMobileMenuExpanded);

@@ -1,7 +1,5 @@
 'use client'
 
-import Navbar from '@/app/components/Navbar';
-import Footer from '@/app/components/Footer';
 import { useState } from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
 

@@ -25,7 +25,7 @@ export default function AboutPage() {
           <h2 className="text-3xl font-bold mb-6">Our Story</h2>
           <p className="text-gray-600 mb-4">
             Founded in 2019, GIVA was born from a vision to make premium quality silver jewelry accessible to everyone. 
-            We believe that every piece of jewelry tells a story, and we're here to help you tell yours.
+            We believe that every piece of jewelry tells a story, and we&rsquo;re here to help you tell yours.
           </p>
           <p className="text-gray-600">
             Our artisans combine traditional craftsmanship with modern design sensibilities to create pieces that are 

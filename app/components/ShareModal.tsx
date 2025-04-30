@@ -1,4 +1,4 @@
-import { FiX, FiCopy, FiShare2 } from 'react-icons/fi';
+import { FiX, FiCopy } from 'react-icons/fi';
 import { useState } from 'react';
 import {
   WhatsappIcon,
@@ -82,7 +82,7 @@ export default function ShareModal({ open, onClose, shareUrl, title = 'Share' }:
           <EmailShareButton url={shareUrl} title={title} className="flex items-center justify-center gap-2 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 rounded-lg transition">
             <EmailIcon size={32} round />
           </EmailShareButton>
-          <PinterestShareButton url={shareUrl} title={title} className="flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg transition">
+          <PinterestShareButton url={shareUrl}  media={shareUrl} title={title} className="flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg transition">
             <PinterestIcon size={32} round />
           </PinterestShareButton>
           <TelegramShareButton url={shareUrl} title={title} className="flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg transition">

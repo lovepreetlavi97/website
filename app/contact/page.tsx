@@ -32,7 +32,7 @@ export default function ContactUs() {
       <div className="text-center mb-16">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">Contact Us</h1>
         <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-          We're here to help! Send us your questions or concerns.
+          We&rsquo;re here to help! Send us your questions or concerns.
         </p>
       </div>
 
@@ -57,7 +57,7 @@ export default function ContactUs() {
             <div>
               <h3 className="text-lg font-medium text-gray-900">Email</h3>
               <p className="mt-1 text-gray-600">support@giva.co</p>
-              <p className="mt-1 text-gray-600">We'll respond within 24 hours</p>
+              <p className="mt-1 text-gray-600">We&rsquo;ll respond within 24 hours</p>
             </div>
           </div>
 

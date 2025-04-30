@@ -1,7 +1,7 @@
 "use client";
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState, useEffect, useRef } from 'react';
+import {  useRef , useCallback, useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import ProductCard from './components/ProductCard';
 import { categories } from './data/categories';
@@ -50,15 +50,23 @@ export default function Home() {
       linkText: "EXPLORE"
     }
   ];
-
-  // Auto slide effect
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+  };
+  
+  const nextSlide = useCallback(() => {
+    const newIndex = (currentSlide + 1) % slides.length;
+    goToSlide(newIndex);
+  }, [currentSlide, slides.length, goToSlide]);
+  
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
     }, 5000);
-
+  
     return () => clearInterval(interval);
-  }, [currentSlide]);
+  }, [nextSlide]);
+  
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
@@ -67,10 +75,7 @@ export default function Home() {
     }
   };
 
-  const nextSlide = () => {
-    const newIndex = (currentSlide + 1) % slides.length;
-    goToSlide(newIndex);
-  };
+
 
 
   useEffect(() => {

@@ -1,22 +1,22 @@
 'use client';
 
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import {  useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-import { removeFromWishlist } from '../store/features/wishlistSlice';
-import { Share } from 'lucide-react';
+// import { removeFromWishlist } from '../store/features/wishlistSlice';
+import { Link, Share } from 'lucide-react';
 import ShareModal from '../components/ShareModal';
 import ProductCard from '../components/ProductCard';
 
 export default function WishlistPage() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { items: wishlistItems } = useSelector((state: RootState) => state.wishlist);
   const [activeTab, setActiveTab] = useState('wishlist');
   const [open, setOpen] = useState(false);
 
-  const handleRemoveFromWishlist = (id: string) => {
-    dispatch(removeFromWishlist(id));
-  };
+  // const handleRemoveFromWishlist = (id: string) => {
+  //   dispatch(removeFromWishlist(id));
+  // };
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -69,12 +69,12 @@ export default function WishlistPage() {
             <div className="text-center py-12">
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Your wishlist is empty</h3>
               <p className="text-gray-600 mb-6">Add items to your wishlist to see them here</p>
-              <a 
+              <Link
                 href="/collections/all" 
                 className="inline-block bg-pink-500 text-white px-6 py-2 rounded-md hover:bg-pink-600 transition-colors cursor-pointer"
               >
                 Start Shopping
-              </a>
+              </Link>
             </div>
           )}
         </div>

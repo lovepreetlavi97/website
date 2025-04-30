@@ -36,6 +36,10 @@ const filters = {
 // Mock products data
 import { products as productsData } from '@/app/data/products';
 
+interface Option {
+  id: string;
+  name: string;
+}
 
 
 export default function CollectionPage({ params }: { params: { category: string } }) {
@@ -80,7 +84,7 @@ export default function CollectionPage({ params }: { params: { category: string 
     }
   }, [inView, hasMore, loading, products.length]);
 
-  const FilterSection = ({ title, options, category }: { title: string; options: any[]; category: string }) => (
+  const FilterSection = ({ title, options, category }: { title: string; options: Option[]; category: string }) => (
     <div className="border-b border-gray-200 py-6">
       <h3 className="flow-root -my-3">
         <button
