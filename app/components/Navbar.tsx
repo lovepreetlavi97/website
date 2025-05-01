@@ -200,13 +200,9 @@ export default function Navbar() {
   const [activeSubSubMenu, setActiveSubSubMenu] = useState<string | null>(null);
   const [hoveredSubMenu, setHoveredSubMenu] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const { totalItems: cartItems } = useSelector((state: RootState) => state.cart);
+  const { items: cartItems } = useSelector((state: RootState) => state.cart);
   const { totalItems: wishlistItems } = useSelector((state: RootState) => state.wishlist);
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
 
   const toggleMobileExpandedMenu = () => {
     setIsMobileMenuExpanded(!isMobileMenuExpanded);
@@ -300,9 +296,22 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       {/* Announcement Bar */}
-      <div className="bg-[#f8e8e0] text-center py-1 text-xs md:text-sm">
-        Pan India Free Shipping!
+      <div className="bg-[#f8e8e0] text-center py-1 text-xs md:text-sm overflow-hidden">
+        <div className="animate-slide">
+          <Link href="/collections/all-necklaces" className="underline">Pan India Free Shipping!</Link>
+        </div>
       </div>
+      <style jsx>{`
+        @keyframes slide {
+          0% { transform: translateY(100%); }
+          10% { transform: translateY(0); }
+          90% { transform: translateY(0); }
+          100% { transform: translateY(-100%); }
+        }
+        .animate-slide {
+          animation: slide 3s linear infinite; /* Adjusted duration for better visibility */
+        }
+      `}</style>
 
       {/* Mobile Navbar - Collapsed State */}
       {isMobileView && !isMobileMenuExpanded && (
@@ -326,10 +335,20 @@ export default function Navbar() {
             {/* Right Icons */}
             <div className="flex items-center space-x-4">
               <Link href="/wishlist">
-                <Heart className="h-6 w-6 text-gray-700" />
+                <div className="relative">
+                  {wishlistItems > 0 && (
+                    <span className="absolute -top-[10px] -right-[10px] text-[10px] bg-pink-500 text-white rounded-full px-2 py-1">{wishlistItems}</span>
+                  )}
+                  <Heart className="h-6 w-6 text-gray-700" />
+                </div>
               </Link>
               <Link href="/cart">
-                <ShoppingBag className="h-6 w-6 text-gray-700" />
+                <div className="relative">
+                  {cartItems?.length > 0 && (
+                    <span className="absolute -top-[10px] -right-[10px] text-[10px] bg-pink-500 text-white rounded-full px-2 py-1">{cartItems?.length}</span>
+                  )}
+                  <ShoppingBag className="h-6 w-6 text-gray-700" />
+                </div>
               </Link>
             </div>
           </div>
@@ -368,10 +387,20 @@ export default function Navbar() {
 
             <div className="flex items-center space-x-4">
               <Link href="/wishlist">
-                <Heart className="h-6 w-6 text-gray-700" />
+                <div className="relative">
+                  {wishlistItems > 0 && (
+                    <span className="absolute -top-[10px] -right-[10px] text-[10px] bg-pink-500 text-white rounded-full px-2 py-1">{wishlistItems}</span>
+                  )}
+                  <Heart className="h-6 w-6 text-gray-700" />
+                </div>
               </Link>
               <Link href="/cart">
-                <ShoppingBag className="h-6 w-6 text-gray-700" />
+                <div className="relative">
+                  {cartItems?.length > 0 && (
+                    <span className="absolute -top-[10px] -right-[10px] text-[10px] bg-pink-500 text-white rounded-full px-2 py-1">{cartItems?.length}</span>
+                  )}
+                  <ShoppingBag className="h-6 w-6 text-gray-700" />
+                </div>
               </Link>
             </div>
           </div>
@@ -453,12 +482,13 @@ export default function Navbar() {
             <div className="hidden md:flex relative w-1/3">
               <input
                 type="text"
-                placeholder="Search Pendants"
-                className="w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none"
+                placeholder="Search 'Gifts For Her'"
+                className="w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none animate-slide-search"
               />
               <button className="absolute right-3 top-2.5">
                 <Search className="h-5 w-5 text-gray-500" />
               </button>
+
             </div>
 
             {/* Mobile Menu Button */}
@@ -480,11 +510,21 @@ export default function Navbar() {
                 <span>ACCOUNT</span>
               </Link>
               <Link href="/wishlist" className="flex flex-col items-center text-xs">
-                <Heart className="h-7 w-7" />
+                <div className="relative">
+                  {wishlistItems > 0 && (
+                    <span className="absolute -top-[10px] -right-[10px] text-[10px] bg-pink-500 text-white rounded-full px-2 py-1">{wishlistItems}</span>
+                  )}
+                  <Heart className="h-7 w-7" />
+                </div>
                 <span>WISHLIST</span>
               </Link>
               <Link href="/cart" className="flex flex-col items-center text-xs">
-                <ShoppingBag className="h-7 w-7" />
+                <div className="relative">
+                  {cartItems?.length > 0 && (
+                    <span className="absolute -top-[10px] -right-[10px] text-[10px] bg-pink-500 text-white rounded-full px-2 py-1">{cartItems?.length}</span>
+                  )}
+                  <ShoppingBag className="h-7 w-7" />
+                </div>
                 <span>CART</span>
               </Link>
             </div>
@@ -606,4 +646,4 @@ export default function Navbar() {
       )}
     </header>
   );
-} 
+}

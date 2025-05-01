@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import ProductCard from './components/ProductCard';
+import ProductSkeleton from './components/ProductSkeleton';
 import { categories } from './data/categories';
 import { shopByCategory } from './data/shopByCategory';
 import { featuredCollections } from './data/featuredCollections';
@@ -11,6 +12,7 @@ import { curatedItems } from './data/curatedItems';
 import { instagramPosts } from './data/instagramPosts';
 import { customerReviews } from './data/customerReviews';
 import { getFeaturedProducts, getTrendingProducts } from './data/products';
+import { useLoading } from './contexts/LoadingContext';
 
 const weAreGiva = [1, 2, 3, 4]
 
@@ -23,6 +25,8 @@ export default function Home() {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const { setIsLoading } = useLoading();
 
   const slides = [
     {
@@ -137,6 +141,34 @@ export default function Home() {
     setIsDragging(false);
   };
 
+  // Add loading effect with better error handling
+  useEffect(() => {
+    // Show loading state on initial load
+    try {
+      setIsLoading(true);
+    } catch (error) {
+      console.error('Error setting loading state:', error);
+    }
+    
+    const timer = setTimeout(() => {
+      setLoading(false);
+      try {
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error resetting loading state:', error);
+      }
+    }, 1000);
+    
+    return () => {
+      clearTimeout(timer);
+      try {
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error cleaning up loading state:', error);
+      }
+    };
+  }, [setIsLoading]);
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Banner - Converted to Slider */}
@@ -201,32 +233,43 @@ export default function Home() {
 
           <div
             ref={categoriesRef}
-            className="flex space-x-6 overflow-x-auto pb-4 relative no-scrollbar scroll-smooth"
+            className="flex overflow-x-auto pb-4 relative no-scrollbar scroll-smooth"
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseLeave}
           >
             {/* Regular categories */}
-            {categories.map((category, index) => (
-              <Link
-                href={`/collections/${category.slug}`}
-                key={index}
-                className="flex-shrink-0 flex flex-col items-center w-1/3 sm:w-auto md:w-auto"
-              >
-                <div className="w-[100px] h-[100px] sm:w-[100px] sm:h-[100px] md:w-[250px] md:h-[250px] flex items-center justify-center mb-2 overflow-hidden rounded-full bg-gray-50 mx-auto">
-                  <Image 
-                    src={category.image}
-                    alt={category.name}
-                    width={250}
-                    height={250}
-                    sizes="(max-width: 640px) 100px, (max-width: 768px) 180px, 250px"
-                    className="object-cover w-full h-full"
-                  />
+            {loading ? (
+              // Skeleton for categories
+              [...Array(5)].map((_, index) => (
+                <div key={index} className="flex-shrink-0 flex flex-col items-center w-1/3 sm:w-auto md:w-auto animate-pulse">
+                  <div className="w-[100px] h-[100px] sm:w-[100px] sm:h-[100px] md:w-[250px] md:h-[250px] flex items-center justify-center mb-2 overflow-hidden rounded-full bg-gray-200 mx-auto"></div>
+                  <div className="h-4 bg-gray-200 rounded w-20 mx-auto"></div>
                 </div>
-                <span className="text-sm sm:text-base md:text-[20px] text-center whitespace-nowrap">{category.name}</span>
-              </Link>
-            ))}
+              ))
+            ) : (
+              // Actual categories
+              categories.map((category, index) => (
+                <Link
+                  href={`/collections/${category.slug}`}
+                  key={index}
+                  className="flex-shrink-0 flex flex-col items-center w-1/3 sm:w-auto md:w-auto"
+                >
+                  <div className="w-[100px] h-[100px] sm:w-[100px] sm:h-[100px] md:w-[250px] md:h-[250px] flex items-center justify-center mb-2 overflow-hidden rounded-full bg-gray-50 mx-auto">
+                    <Image 
+                      src={category.image}
+                      alt={category.name}
+                      width={250}
+                      height={250}
+                      sizes="(max-width: 640px) 100px, (max-width: 768px) 180px, 250px"
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                  <span className="text-sm sm:text-base md:text-[20px] text-center whitespace-nowrap">{category.name}</span>
+                </Link>
+              ))
+            )}
           </div>
         </div>
       </section>
@@ -236,12 +279,18 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-4">
           <h2 className="mb-6 text-center text-2xl font-bold">Shop Essentials</h2>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {getFeaturedProducts().map((product) => (
-              <ProductCard
-                key={product.id}
-                {...product}
-              />
-            ))}
+            {loading ? (
+              [...Array(4)].map((_, index) => (
+                <ProductSkeleton key={index} />
+              ))
+            ) : (
+              getFeaturedProducts().map((product) => (
+                <ProductCard
+                  key={product.id}
+                  {...product}
+                />
+              ))
+            )}
           </div>
               </div>
             </div>
@@ -320,12 +369,18 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-4">
           <h2 className="mb-6 text-center text-2xl font-bold">Trending Now</h2>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {getTrendingProducts().map((product) => (
-              <ProductCard
-                key={product.id}
-                {...product}
-              />
-            ))}
+            {loading ? (
+              [...Array(4)].map((_, index) => (
+                <ProductSkeleton key={index} />
+              ))
+            ) : (
+              getTrendingProducts().map((product) => (
+                <ProductCard
+                  key={product.id}
+                  {...product}
+                />
+              ))
+            )}
           </div>
         </div>
       </div>

@@ -1,4 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GIVA - Jewelry E-commerce Website
+
+This is a jewelry e-commerce website inspired by Giva.co.
+
+## Features
+
+### Shopping Experience
+- Browse products by category
+- View detailed product information
+- Add products to cart
+- Add products to wishlist
+- Share products with friends
+
+### Product Display
+- Image gallery with navigation
+- Product specifications
+- Customer reviews
+- Related products suggestions
+
+### UI/UX Features
+- Loading screens for initial visits
+- Skeleton loading components for dynamic content
+- Responsive design for all device sizes
+- Smooth transitions and animations
+
+## Tech Stack
+
+- Next.js
+- React
+- TypeScript
+- Redux for state management
+- TailwindCSS for styling
+
+## Loading States
+
+The website features different types of loading states:
+
+1. **First Visit Global Loading**: Shows a loading screen with a progress bar when a user visits the site for the first time.
+
+2. **Skeleton Loading Components**: Displays placeholder UI while content is being loaded, providing a smoother user experience. Different skeleton components are used for:
+   - Product cards
+   - Product detail pages
+   - Category displays
+
+To reset the first visit experience (for testing):
+```js
+// Run in browser console
+localStorage.removeItem('hasVisitedBefore');
+```
+
+## Development
+
+### Setup
+
+```bash
+npm install
+npm run dev
+```
+
+### Build
+
+```bash
+npm run build
+npm run start
+```
 
 ## Getting Started
 

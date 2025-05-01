@@ -1,9 +1,7 @@
 'use client'
 
-import Navbar from '@/app/components/Navbar';
-import Footer from '@/app/components/Footer';
 import { useState } from 'react';
-import { FaWhatsapp } from 'react-icons/fa';
+import { FaGoogle, FaWhatsapp, FaFacebook } from 'react-icons/fa';
 
 export default function LoginPage() {
   const [phone, setPhone] = useState('');
@@ -52,6 +50,12 @@ export default function LoginPage() {
           </div>
           <button className="w-full flex items-center justify-center gap-2 border border-gray-300 rounded-lg py-2 text-lg font-medium hover:bg-gray-50 transition-colors mb-4 cursor-pointer">
             <FaWhatsapp className="text-green-500 text-2xl" /> WhatsApp
+          </button>
+          <button className="w-full flex items-center justify-center gap-2 border border-gray-300 rounded-lg py-2 text-lg font-medium hover:bg-gray-50 transition-colors mb-4 cursor-pointer">
+            <FaGoogle className="text-red-500 text-2xl" /> Google
+          </button>
+          <button className="w-full flex items-center justify-center gap-2 border border-gray-300 rounded-lg py-2 text-lg font-medium hover:bg-gray-50 transition-colors mb-4 cursor-pointer">
+            <FaFacebook className="text-blue-500 text-2xl" /> Facebook
           </button>
           <div className="text-center mb-2">
             <a href="#" className="text-pink-600 underline text-sm hover:text-pink-700">Having trouble logging in.</a>

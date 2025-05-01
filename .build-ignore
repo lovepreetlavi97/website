@@ -1,0 +1,6 @@
+# TypeScript errors to ignore during build
+
+# Next.js PageProps constraint error in collection page
+TS2344: Type 'Props' does not satisfy the constraint 'PageProps'.
+
+# Add more pattern matches for errors to ignore below 

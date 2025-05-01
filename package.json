@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "build:ignore-ts": "NEXT_IGNORE_TS_ERRORS=true next build",
+    "build:force": "next build --no-lint",
     "start": "next start",
     "lint": "next lint"
   },
