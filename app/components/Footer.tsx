@@ -2,22 +2,13 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ChevronDown, ChevronUp, Facebook, Instagram, Twitter, Youtube, Mail } from 'lucide-react';
+import {  Facebook, Instagram, Twitter, Youtube, Mail } from 'lucide-react';
 
 export default function Footer() {
-  const [expandedFooterSections, setExpandedFooterSections] = useState({
-    customerService: false,
-    about: false,
-    shop: false
-  });
+
   const [email, setEmail] = useState('');
 
-  const toggleFooterSection = (section: 'customerService' | 'about' | 'shop') => {
-    setExpandedFooterSections(prev => ({
-      ...prev,
-      [section]: !prev[section]
-    }));
-  };
+;
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();

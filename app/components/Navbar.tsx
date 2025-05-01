@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Search, ShoppingBag, Heart, User, ChevronLeft, ChevronRight, ChevronDown, ShoppingCart, Menu, X } from "lucide-react"
+import { Search, ShoppingBag, Heart, User,  ChevronRight, ChevronDown} from "lucide-react"
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
+
 
 // Add these interfaces before the menuData definition
 interface SubMenuItem {
@@ -192,7 +193,7 @@ interface MobileSubmenuProps {
 }
 
 export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
   const [isMobileMenuExpanded, setIsMobileMenuExpanded] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null);

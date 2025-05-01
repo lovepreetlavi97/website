@@ -7,7 +7,9 @@ import { removeFromCart, updateQuantity } from '../store/features/cartSlice';
 import { getTrendingProducts } from '../data/products';
 import ProductCard from '../components/ProductCard';
 import { Trash2, Plus, Minus } from 'lucide-react';
+import Link from 'next/link';
 
+import Image from 'next/image';
 export default function CartPage() {
   const dispatch = useDispatch();
   const { items, totalPrice } = useSelector((state: RootState) => state.cart);
@@ -35,7 +37,7 @@ export default function CartPage() {
                   <div key={item.id} className="flex items-center gap-4 py-4 border-b last:border-b-0">
                     {/* Product Image */}
                     <div className="relative w-24 h-24 flex-shrink-0">
-                      <img
+                      <Image
                         src={item.image}
                         alt={item.name}
                         className="w-full h-full object-cover rounded-md"
@@ -107,12 +109,12 @@ export default function CartPage() {
           <div className="text-center py-12">
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">Your cart is empty</h2>
             <p className="text-gray-600 mb-8">Add items to your cart to see them here</p>
-            <a
+            <Link
               href="/collections/all"
               className="inline-block bg-pink-600 text-white px-6 py-3 rounded-md hover:bg-pink-700 transition-colors cursor-pointer"
             >
               Start Shopping
-            </a>
+            </Link>
           </div>
         )}
 
