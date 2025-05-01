@@ -228,9 +228,13 @@
 
 import CollectionClient from './CollectionClient';
 
-// ✅ Use any to bypass type conflict safely
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function Page(props: any) {
-  return <CollectionClient category={props?.params?.category || ''} />;
+interface PageProps {
+  params: {
+    category: string;
+  };
 }
 
+// Remove `any` and use your own type
+export default function Page({ params }: PageProps) {
+  return <CollectionClient category={params.category || ''} />;
+}
