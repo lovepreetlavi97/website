@@ -1,3 +1,5 @@
+"use client";
+
 import { FiX, FiCopy } from 'react-icons/fi';
 import { useState } from 'react';
 import {

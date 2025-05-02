@@ -2,12 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, Star, ShoppingCart } from "lucide-react";
+import { Heart, Star } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { addToCart } from "../store/features/cartSlice";
 import { addToWishlist, removeFromWishlist } from "../store/features/wishlistSlice";
-import { useState } from "react";
 
 interface ProductCardProps {
   id: string;

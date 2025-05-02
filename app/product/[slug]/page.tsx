@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -55,7 +55,7 @@ const reviews = [
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
   const [selectedImage, setSelectedImage] = useState(0);
-  const [quantity, setQuantity] = useState(1);
+  const [quantity] = useState(1);
   const [selectedFinish, setSelectedFinish] = useState('silver');
   const [pincode, setPincode] = useState('');
   const [showAllReviews, setShowAllReviews] = useState(false);
