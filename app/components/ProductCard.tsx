@@ -150,8 +150,8 @@ export default function ProductCard({
           onClick={handleAddToCart}
           className={`w-full py-1 rounded font-medium text-center transition-colors ${
             quantity > 0
-              ? 'bg-pink-100 text-pink-600 hover:bg-pink-200'
-              : 'bg-gradient-to-r from-rose-400 to-red-500 text-white hover:bg-pink-700'
+              ? 'bg-[#F4C2B3] text-gray-700 hover:bg-[#FF627C] hover:text-white'
+              : 'bg-[#F4C2B3] text-gray-700 hover:bg-[#FF627C] hover:text-white'
           } cursor-pointer`}
         >
           {quantity > 0 ? 'Added to Cart' : 'Add to Cart'}

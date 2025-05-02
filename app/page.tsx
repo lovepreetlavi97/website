@@ -1,7 +1,7 @@
 "use client";
 import Image from 'next/image';
 import Link from 'next/link';
-import {  useRef , useCallback, useEffect, useState } from 'react';
+import { useRef, useCallback, useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import ProductCard from './components/ProductCard';
 import ProductSkeleton from './components/ProductSkeleton';
@@ -57,21 +57,21 @@ export default function Home() {
   const goToSlide = useCallback((index: number) => {
     setCurrentSlide(index);
   }, []);
-  
+
   const nextSlide = useCallback(() => {
     const newIndex = (currentSlide + 1) % slides.length;
     goToSlide(newIndex);
   }, [currentSlide, slides.length, goToSlide]);
-  
-  
+
+
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
     }, 5000);
-  
+
     return () => clearInterval(interval);
   }, [nextSlide]);
-  
+
 
   // const goToSlide = (index: number) => {
   //   setCurrentSlide(index);
@@ -155,7 +155,7 @@ export default function Home() {
     } catch (error) {
       console.error('Error setting loading state:', error);
     }
-    
+
     const timer = setTimeout(() => {
       setLoading(false);
       try {
@@ -164,7 +164,7 @@ export default function Home() {
         console.error('Error resetting loading state:', error);
       }
     }, 1000);
-    
+
     return () => {
       clearTimeout(timer);
       try {
@@ -186,7 +186,7 @@ export default function Home() {
         >
           {slides.map((slide, index) => (
             <div key={slide.id} className="w-full flex-shrink-0 relative">
-              <div className="relative h-[300px] md:h-[400px] lg:h-[500px] w-full">
+              <div className="relative h-[280px] md:h-[380px] lg:h-[480px] w-full">
                 <Image
                   src={slide.image}
                   alt={`GIVA Jewelry - ${slide.title}`}
@@ -195,10 +195,10 @@ export default function Home() {
                   className="object-cover object-center"
                 />
               </div>
-      </div>
+            </div>
           ))}
-          </div>
-          
+        </div>
+
         {/* Slide indicators */}
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
           {slides.map((_, index) => (
@@ -263,7 +263,7 @@ export default function Home() {
                   className="flex-shrink-0 flex flex-col items-center w-1/3 sm:w-auto md:w-auto"
                 >
                   <div className="w-[100px] h-[100px] sm:w-[100px] sm:h-[100px] md:w-[250px] md:h-[250px] flex items-center justify-center mb-2 overflow-hidden rounded-full bg-gray-50 mx-auto">
-                    <Image 
+                    <Image
                       src={category.image}
                       alt={category.name}
                       width={250}
@@ -279,7 +279,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      
+
       {/* Featured Products */}
       <div className="bg-gradient-to-b from-pink-50 to-white py-8">
         <div className="mx-auto max-w-6xl px-4">
@@ -298,9 +298,9 @@ export default function Home() {
               ))
             )}
           </div>
-              </div>
-            </div>
-            
+        </div>
+      </div>
+
       {/* Banner */}
       <div className="bg-gradient-to-r from-pink-100 to-pink-200 py-6">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 md:flex-row">
@@ -313,41 +313,16 @@ export default function Home() {
               </button>
             </Link>
           </div>
-                <Image 
+          <Image
             src="https://www.giva.co/cdn/shop/files/Frame_1000009460_1.jpg?v=1744794541&width=1500"
             alt="Mother&rsquo;s Day Special"
-            width={300}
-            height={200}
+            width={600}
+            height={600}
             className="h-auto w-full max-w-xs rounded-lg object-cover"
-                />
-              </div>
-            </div>
-            
-      {/* Shop By Category */}
-      <div className="py-8">
-        <div className="mx-auto max-w-6xl px-4">
-          <h2 className="mb-6 text-center text-2xl font-bold">Shop By Category</h2>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {shopByCategory.map((category) => (
-              <div key={category.name} className="overflow-hidden rounded-lg">
-                <Link href={`/collections/${category.slug}`} className="group relative block">
-                <Image 
-                    src="https://www.giva.co/cdn/shop/files/PD02328_5.jpg?v=1706795031&width=533"
-                    alt={category.name}
-                    width={300}
-                    height={300}
-                    className="h-auto w-full transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/50 to-transparent p-4">
-                    <span className="text-lg font-medium text-white">{category.name}</span>
-                  </div>
-                </Link>
-              </div>
-            ))}
-          </div>
+          />
         </div>
-            </div>
-            
+      </div>
+
       {/* We Are Giva */}
       <div className="bg-pink-50 py-8">
         <div className="mx-auto max-w-6xl px-4">
@@ -356,8 +331,8 @@ export default function Home() {
             {weAreGiva.map((item, index) => (
               <div key={index} className="overflow-hidden rounded-lg cursor-pointer">
                 <Link href={`/collections/we-are-giva`}>
-                <Image 
-                  src="https://www.giva.co/cdn/shop/files/Solitaires_9c6a2bb2-0417-40ec-8b79-a566dd99071a.jpg?v=1744792940&width=1500"
+                  <Image
+                    src="https://www.giva.co/cdn/shop/files/Solitaires_9c6a2bb2-0417-40ec-8b79-a566dd99071a.jpg?v=1744792940&width=1500"
                     alt={`Giva ${index + 1}`}
                     width={300}
                     height={300}
@@ -368,8 +343,8 @@ export default function Home() {
             ))}
           </div>
         </div>
-          </div>
-          
+      </div>
+
       {/* Product Grid */}
       <div className="py-8">
         <div className="mx-auto max-w-6xl px-4">
@@ -390,53 +365,46 @@ export default function Home() {
           </div>
         </div>
       </div>
-      
+
       {/* Featured Collections */}
-      <div className="bg-gradient-to-b from-pink-50 to-white py-8">
+      <div className="bg-white py-8">
         <div className="mx-auto max-w-6xl px-4">
-          <h2 className="mb-6 text-center text-2xl font-bold">Featured Collections</h2>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {featuredCollections.map((collection) => (
-              <div key={collection.name} className="overflow-hidden rounded-lg">
+          <h2 className="mb-6 text-center text-2xl font-bold">Shop By Colour</h2>
+          <div className="grid grid-cols-2 gap-6">
+            {featuredCollections.slice(0, 2).map((collection, index) => (
+              <div key={collection.name} className="overflow-hidden rounded-lg w-full h-full">
                 <Link href={`/collections/${collection.slug}`} className="group relative block">
-                <Image 
-                    src="https://www.giva.co/cdn/shop/files/web_Size_1_-min.jpg?v=1734188041&width=550"
-                    alt={collection.name}
-                    width={300}
-                    height={300}
-                    className="h-auto w-full transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/50 to-transparent p-4">
-                    <span className="text-lg font-medium text-white">{collection.name}</span>
-              </div>
+                  <div className="relative aspect-square overflow-hidden rounded-lg">
+                    <Image
+                      src={"https://www.giva.co/cdn/shop/files/Gold_Mobile_355d7c97-c0fe-454b-9d37-fa40a9f27a26.jpg?v=1744792939&width=1500"}
+                      alt={collection.name}
+                      width={600}
+                      height={600}
+                      className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
                 </Link>
               </div>
             ))}
           </div>
-              </div>
-            </div>
-            
-      {/* Curated For You */}
+        </div>
+      </div>
+
+      {/* Gifting Guide For You */}
       <div className="py-8">
         <div className="mx-auto max-w-6xl px-4">
-          <h2 className="mb-6 text-center text-2xl font-bold">Curated For You</h2>
+          <h2 className="mb-6 text-center text-2xl font-bold">Gifting Guide</h2>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             {curatedItems.map((item) => (
-              <div key={item.id} className="overflow-hidden rounded-lg bg-pink-50 p-4 text-center cursor-pointer">
-                <Link href={`/collections/${item.slug}`}>
-                <Image 
-                    src="https://www.giva.co/cdn/shop/files/Frame_2612078.jpg?v=1744792939&width=300"
-                    alt={item.name}
-                    width={200}
-                    height={200}
-                    className="mx-auto h-auto w-full max-w-[150px]"
-                  />
-                </Link>
-                <h3 className="mt-2 font-medium">{item.name}</h3>
-                <Link href={`/collections/${item.slug}`} className="mt-2 rounded-full border border-pink-500 px-4 py-1 text-sm text-pink-500 hover:bg-pink-500 hover:text-white cursor-pointer">
-                  Explore
-                </Link>
-              </div>
+              <Link href={`/collections/${item.slug}`}>
+                <Image
+                  src="https://www.giva.co/cdn/shop/files/Frame_2612078.jpg?v=1744792939&width=300"
+                  alt={item.name}
+                  width={300}
+                  height={300}
+                  className="mx-auto h-auto w-full max-w-[300px] cursor-pointer"
+                />
+              </Link>
             ))}
           </div>
         </div>
@@ -486,13 +454,13 @@ export default function Home() {
                   rel="noopener noreferrer"
                   className="flex-shrink-0 group relative"
                 >
-                  <div className="w-[300px] h-[300px] sm:w-[350px] sm:h-[350px] md:w-[400px] md:h-[400px] overflow-hidden">
-                <Image 
+                  <div className="w-[200px] h-[200px] sm:w-[250px] sm:h-[250px] md:w-[300px] md:h-[300px] overflow-hidden">
+                    <Image
                       src={post.image}
                       alt={post.caption}
-                      width={400}
-                      height={400}
-                      sizes="(max-width: 640px) 300px, (max-width: 768px) 350px, 400px"
+                      width={200}
+                      height={200}
+                      sizes="(max-width: 640px) 200px, (max-width: 768px) 250px, 300px"
                       className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-1 transition-opacity duration-300 flex items-center justify-center">
@@ -500,14 +468,14 @@ export default function Home() {
                         <p className="text-sm font-bold text-black text-[20px]">{post.caption}</p>
                       </div>
                     </div>
-              </div>
+                  </div>
                 </a>
               ))}
             </div>
           </div>
-              </div>
-            </div>
-            
+        </div>
+      </div>
+
 
       {/* Customer Reviews */}
       <div className="py-12 bg-gradient-to-b from-white to-pink-50 w-full">
@@ -545,62 +513,13 @@ export default function Home() {
               onMouseLeave={handleMouseLeave}
             >
               {customerReviews.map((review, index) => (
-                <div key={index} className="flex-shrink-0 w-[300px] bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col h-[320px]">
-                  <div className="w-full h-[200px] overflow-hidden">
-                <Image 
-                      src={review.avatar}
-                      alt={review.name}
-                      width={150}
-                      height={150}
-                      className="w-[100px] h-[100px] object-cover rounded-full mx-auto mt-4 border-2 border-pink-200"
-                />
-              </div>
-                  <div className="p-6 flex-grow flex flex-col text-center">
+                <div key={index} className="flex-shrink-0 w-[300px] bg-pink-100 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col h-[200px]">
+                  <div className="p-6 flex-grow flex flex-col items-center justify-center text-center">
                     <h3 className="font-semibold text-gray-800 mb-1">{review.name}</h3>
-                    <div className="flex items-center mb-3 mx-auto">
-                      {[...Array(5)].map((_, i) => (
-                        <svg
-                          key={i}
-                          className={`w-4 h-4 ${i < review.rating ? 'text-yellow-400' : 'text-gray-300'}`}
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-                      ))}
-              </div>
-                    <p className="text-gray-600 text-sm mb-4 flex-grow">{review.comment}</p>
-                    <p className="text-gray-400 text-xs mt-auto">{review.date}</p>
-              </div>
-            </div>
+                    <p className="text-gray-600 text-sm flex-grow">{review.comment}</p>
+                  </div>
+                </div>
               ))}
-            </div>
-          </div>
-        </div>
-            </div>
-            
-      {/* Newsletter */}
-      <div className="py-12 bg-pink-50 w-full">
-        <div className="w-full px-4">
-          <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
-            <div className="text-center max-w-4xl mx-auto">
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">Join Our Newsletter</h2>
-              <p className="text-gray-600 mb-8">Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>
-              <form className="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto">
-                <input 
-                  type="email" 
-                  placeholder="Enter your email"
-                  className="flex-1 px-4 py-3 rounded-[10px] border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="px-6 py-3 bg-pink-500 text-white rounded-[10px] font-medium hover:bg-pink-600 transition-colors duration-300 cursor-pointer"
-                >
-                  Subscribe
-                </button>
-              </form>
-              <p className="text-sm text-gray-500 mt-4">By subscribing, you agree to our Privacy Policy and consent to receive updates from our company.</p>
             </div>
           </div>
         </div>
@@ -608,10 +527,3 @@ export default function Home() {
     </div>
   );
 }
-
-
-
-
-
-
-

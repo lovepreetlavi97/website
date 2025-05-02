@@ -53,7 +53,7 @@ const reviews = [
   },
 ];
 
-export default function ProductPage({ params }: { params: { slug: string } }) {
+export default function ProductPage({ params }: { params: any }) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity] = useState(1);
   const [selectedFinish, setSelectedFinish] = useState('silver');

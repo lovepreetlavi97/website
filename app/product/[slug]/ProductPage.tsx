@@ -18,7 +18,7 @@ interface Product {
   description: string;
   specs: string[];
   image: string;
-  images?: string[]; // ✅ Add this
+  images?: any; // ✅ Add this
   slug: string;
 }
 
@@ -58,7 +58,7 @@ export default function ProductPage({ slug }: { slug: string }) {
       price: product.price,
       originalPrice: product.originalPrice,
       image: product.image,
-      secondaryImage: product.images[0],
+      secondaryImage: product.images?.[0],
       slug: product.slug,
       quantity
     }));
@@ -90,7 +90,7 @@ export default function ProductPage({ slug }: { slug: string }) {
               />
             </div>
             <div className="flex space-x-2">
-              {product.images.map((image, index) => (
+              {product.images.map((image: any, index: any) => (
                 <button 
                   key={index}
                   onClick={() => setSelectedImage(index)}

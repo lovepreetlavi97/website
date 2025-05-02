@@ -229,9 +229,7 @@
 import CollectionClient from './CollectionClient';
 
 interface PageProps {
-  params: {
-    category: string;
-  };
+  params: any;
 }
 
 // Remove `any` and use your own type
