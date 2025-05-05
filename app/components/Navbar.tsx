@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
-import { Search, ShoppingBag, Heart, User,  ChevronRight, ChevronDown} from "lucide-react"
+import Image from 'next/image';
+import { Search, ShoppingBag, Heart, User, ChevronRight, ChevronDown} from "lucide-react"
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-
 
 // Add these interfaces before the menuData definition
 interface SubMenuItem {
@@ -18,6 +18,16 @@ interface MenuItem {
   title: string;
   path: string;
   submenu?: SubMenuItem[];
+}
+
+// Define a Product interface for search results
+interface Product {
+  id: string;
+  title: string;
+  path: string;
+  price: number;
+  originalPrice: number;
+  image: string;
 }
 
 // Update the menuData type
@@ -203,7 +213,50 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { items: cartItems } = useSelector((state: RootState) => state.cart);
   const { totalItems: wishlistItems } = useSelector((state: RootState) => state.wishlist);
+  
+  // Search related states
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showSearchResults, setShowSearchResults] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
 
+  // Sample search suggestions
+  const searchSuggestions = [
+    "silver chain",
+    "chain",
+    "gold chain",
+    "rosegold chain",
+    "Chains",
+    "Silver Chains",
+    "Gold Chains",
+  ];
+
+  // Sample product results
+  const productResults: Product[] = [
+    {
+      id: "1",
+      title: "Golden Starlight Chain",
+      path: "/product/golden-starlight-chain",
+      price: 2199,
+      originalPrice: 2999,
+      image: "https://www.giva.co/cdn/shop/files/PD0133_5_cfb989a8-c3fe-4f79-a92a-c9423927dd78.jpg"
+    },
+    {
+      id: "2",
+      title: "Golden Sweet Remembrances Chain",
+      path: "/product/golden-sweet-remembrances-chain",
+      price: 1999,
+      originalPrice: 2999,
+      image: "https://www.giva.co/cdn/shop/files/PD0133_5_cfb989a8-c3fe-4f79-a92a-c9423927dd78.jpg"
+    },
+    {
+      id: "3",
+      title: "Silver Valour Chain For Him",
+      path: "/product/silver-valour-chain-for-him",
+      price: 3899,
+      originalPrice: 6999,
+      image: "https://www.giva.co/cdn/shop/files/PD0133_5_cfb989a8-c3fe-4f79-a92a-c9423927dd78.jpg"
+    }
+  ];
 
   const toggleMobileExpandedMenu = () => {
     setIsMobileMenuExpanded(!isMobileMenuExpanded);
@@ -223,6 +276,103 @@ export default function Navbar() {
     // Clean up
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Close search results when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowSearchResults(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Handle search input change
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    setShowSearchResults(value.length > 0);
+  };
+
+  // Clear search input
+  const clearSearch = () => {
+    setSearchQuery('');
+    setShowSearchResults(false);
+  };
+
+  // Search results component
+  const SearchResults = () => {
+    if (!showSearchResults) return null;
+    
+    return (
+      <div className="absolute top-full left-0 right-0 bg-white shadow-lg rounded-b-lg z-50 border border-gray-200 mt-1">
+        <div className="flex">
+          {/* Left side - Suggestions */}
+          <div className="w-2/5 border-r border-gray-200 p-3">
+            <div className="mb-2 text-sm text-gray-500">Suggestions</div>
+            <ul>
+              {searchSuggestions.map((suggestion, index) => (
+                <li key={index} className="mb-2">
+                  <Link 
+                    href={`/search?q=${encodeURIComponent(suggestion)}`}
+                    className="block text-sm text-gray-700 hover:text-[#c97f5e]"
+                    onClick={() => setShowSearchResults(false)}
+                  >
+                    {suggestion}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          {/* Right side - Products */}
+          <div className="w-3/5 p-3">
+            <div className="mb-2 text-sm text-gray-500">Products</div>
+            <div>
+              {productResults.map((product) => (
+                <Link 
+                  key={product.id} 
+                  href={product.path}
+                  className="flex items-center mb-3 group"
+                  onClick={() => setShowSearchResults(false)}
+                >
+                  <div className="w-16 h-16 relative flex-shrink-0 overflow-hidden bg-gray-100">
+                    <Image
+                      src={product.image}
+                      alt={product.title}
+                      fill
+                      className="object-contain group-hover:scale-105 transition-transform duration-200 rounded-md"
+                      sizes="64px"
+                    />
+                  </div>
+                  <div className="ml-3 flex-grow">
+                    <h4 className="text-sm font-medium text-gray-800 group-hover:text-[#c97f5e] line-clamp-1">{product.title}</h4>
+                    <div className="flex items-center mt-1">
+                      <span className="font-semibold text-gray-900">₹{product.price.toLocaleString()}</span>
+                      <span className="ml-2 text-xs text-gray-500 line-through">₹{product.originalPrice.toLocaleString()}</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <div className="mt-2 text-right">
+              <Link 
+                href={`/search?q=${encodeURIComponent(searchQuery)}`}
+                className="text-sm text-[#c97f5e] hover:underline flex items-center justify-end"
+                onClick={() => setShowSearchResults(false)}
+              >
+                Search for "{searchQuery}" <ChevronRight className="h-4 w-4 ml-1" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   // Desktop submenu component
   const DesktopSubmenu: React.FC<DesktopSubmenuProps> = ({ items, parentPath = '' }) => {
@@ -355,16 +505,27 @@ export default function Navbar() {
           </div>
 
           {/* Search Bar */}
-          <div className="px-4 py-2 bg-white">
+          <div className="px-4 py-2 bg-white" ref={searchRef}>
             <div className="relative">
               <input
                 type="text"
                 placeholder="Search 'Gifts For Her'"
                 className="w-full border border-gray-300 rounded-md py-2 pl-4 pr-10 focus:outline-none text-sm"
+                value={searchQuery}
+                onChange={handleSearchInputChange}
+                onFocus={() => searchQuery && setShowSearchResults(true)}
               />
-              <button className="absolute right-3 top-2">
+              <div className="absolute right-3 top-2 flex items-center">
+                {searchQuery && (
+                  <button onClick={clearSearch} className="mr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-400 hover:text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
                 <Search className="h-5 w-5 text-gray-500" />
-              </button>
+              </div>
+              <SearchResults />
             </div>
           </div>
         </header>
@@ -407,16 +568,27 @@ export default function Navbar() {
           </div>
 
           {/* Search Bar */}
-          <div className="px-4 py-3 bg-white border-b border-gray-100">
+          <div className="px-4 py-3 bg-white border-b border-gray-100" ref={searchRef}>
             <div className="relative">
               <input
                 type="text"
                 placeholder="Search 'Gifts For Her'"
                 className="w-full border border-gray-300 rounded-md py-2 pl-4 pr-10 focus:outline-none text-sm"
+                value={searchQuery}
+                onChange={handleSearchInputChange}
+                onFocus={() => searchQuery && setShowSearchResults(true)}
               />
-              <button className="absolute right-3 top-2">
+              <div className="absolute right-3 top-2 flex items-center">
+                {searchQuery && (
+                  <button onClick={clearSearch} className="mr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-400 hover:text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
                 <Search className="h-5 w-5 text-gray-500" />
-              </button>
+              </div>
+              <SearchResults />
             </div>
           </div>
 
@@ -480,16 +652,26 @@ export default function Navbar() {
             </Link>
 
             {/* Search Bar */}
-            <div className="hidden md:flex relative w-1/3">
+            <div className="hidden md:flex relative w-1/3" ref={searchRef}>
               <input
                 type="text"
                 placeholder="Search 'Gifts For Her'"
                 className="w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none animate-slide-search"
+                value={searchQuery}
+                onChange={handleSearchInputChange}
+                onFocus={() => searchQuery && setShowSearchResults(true)}
               />
-              <button className="absolute right-3 top-2.5">
+              <div className="absolute right-3 top-2.5 flex items-center">
+                {searchQuery && (
+                  <button onClick={clearSearch} className="mr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-400 hover:text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
                 <Search className="h-5 w-5 text-gray-500" />
-              </button>
-
+              </div>
+              <SearchResults />
             </div>
 
             {/* Mobile Menu Button */}
@@ -576,18 +758,29 @@ export default function Navbar() {
           {/* Mobile Menu Dropdown */}
           <div className={`absolute top-full left-0 right-0 bg-white shadow-md z-50 transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-[calc(100vh-4rem)] overflow-y-auto' : 'max-h-0 overflow-hidden'}`}>
             {/* Search Bar Mobile */}
-            <div className="p-4 border-b border-gray-100">
+            <div className="p-4 border-b border-gray-100" ref={searchRef}>
               <div className="relative w-full">
                 <input
                   type="text"
                   placeholder="Search Pendants"
                   className="w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none"
+                  value={searchQuery}
+                  onChange={handleSearchInputChange}
+                  onFocus={() => searchQuery && setShowSearchResults(true)}
                 />
-                <button className="absolute right-3 top-2.5">
+                <div className="absolute right-3 top-2.5 flex items-center">
+                  {searchQuery && (
+                    <button onClick={clearSearch} className="mr-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-400 hover:text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  )}
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
-                </button>
+                </div>
+                <SearchResults />
               </div>
             </div>
 

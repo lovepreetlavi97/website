@@ -111,30 +111,25 @@ export default function ProductCard({
               className="object-cover transition-transform duration-300 hover:scale-105"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
+            {rating > 0 && (
+              <div className="absolute bottom-2 left-2 bg-green-50 px-1.5 py-0.5 rounded flex items-center">
+                <span className="text-sm font-medium text-green-700 mr-1">{rating.toFixed(1)}</span>
+                <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" /> <span className="text-sm text-gray-500 ml-2">|&nbsp;{reviewCount}</span>
+              </div>
+            )}
           </div>
         </Link>
       </div>
 
       {/* Product Info */}
       <div className="p-3">
-        {/* Rating */}
-        <div className="mb-1 flex items-center">
-          {rating > 0 && (
-            <>
-              <div className="bg-green-50 px-1.5 py-0.5 rounded flex items-center">
-                <span className="text-sm font-medium text-green-700 mr-1">{rating.toFixed(1)}</span>
-                <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
-              </div>
-              {reviewCount > 0 && (
-                <span className="text-sm text-gray-500 ml-2">|&nbsp;{reviewCount}</span>
-              )}
-            </>
-          )}
-        </div>
-
         {/* Product Name */}
         <Link href={`/product/${slug}`}>
-          <h3 className="text-gray-700 font-medium text-sm mb-1 line-clamp-2 hover:text-pink-600 transition-colors">{name}</h3>
+          <h3 className="text-gray-700 font-medium text-sm mb-1 line-clamp-2 hover:text-pink-600 transition-colors">
+            {typeof window !== 'undefined' && window.innerWidth <= 768 
+              ? name?.slice(0, 18) + '...' 
+              : name}
+          </h3>
         </Link>
 
         {/* Price */}

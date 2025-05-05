@@ -72,17 +72,6 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [nextSlide]);
 
-
-  // const goToSlide = (index: number) => {
-  //   setCurrentSlide(index);
-  //   if (sliderRef.current) {
-  //     sliderRef.current.style.transform = `translateX(-${index * 100}%)`;
-  //   }
-  // };
-
-
-
-
   useEffect(() => {
     const handleScroll = () => {
       if (categoriesRef.current) {
@@ -175,6 +164,53 @@ export default function Home() {
     };
   }, [setIsLoading]);
 
+  // Festival Section
+  const [activeFestival, setActiveFestival] = useState(1);
+  const [activeImage, setActiveImage] = useState(0);
+  const festivals = [
+    {
+      title: "Mother's Day Special",
+      description: "Celebrate with our exclusive collection",
+      slug: "mothers-day-special",
+      images: [
+        "https://www.giva.co/cdn/shop/files/Frame_1000009460_1.jpg?v=1744794541&width=1500",
+        "https://www.giva.co/cdn/shop/files/Frame_1000009460_1.jpg?v=1744794541&width=1500",
+        "https://www.giva.co/cdn/shop/files/Frame_1000009460_1.jpg?v=1744794541&width=1500",
+      ],
+    },
+    {
+      title: "Diwali Special",
+      description: "Celebrate with our exclusive collection",
+      slug: "diwali-special",
+      images: [
+        "https://www.giva.co/cdn/shop/files/Frame_1000009460_1.jpg?v=1744794541&width=1500",
+      ],
+    },
+  ];
+
+  const shopByPrice = [
+    {
+      id: 1,
+      slug: "under-999",
+      image: "https://www.giva.co/cdn/shop/files/Frame_1171276721.jpg?v=1746277413&width=1500",
+    },
+    {
+      id: 2,
+      slug: "under-2999",
+      image: "https://www.giva.co/cdn/shop/files/Frame_1171276721.jpg?v=1746277413&width=1500",
+    },
+    {
+      id: 3,
+      slug: "under-4999",
+      image: "https://www.giva.co/cdn/shop/files/Frame_1171276721.jpg?v=1746277413&width=1500",
+    },
+    {
+      id: 4,
+      slug: "under-9999",
+      image: "https://www.giva.co/cdn/shop/files/Frame_1171276721.jpg?v=1746277413&width=1500",
+    }
+  ]
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Banner - Converted to Slider */}
@@ -186,7 +222,7 @@ export default function Home() {
         >
           {slides.map((slide, index) => (
             <div key={slide.id} className="w-full flex-shrink-0 relative">
-              <div className="relative h-[280px] md:h-[380px] lg:h-[480px] w-full">
+              <div className="relative h-[200px] md:h-[380px] lg:h-[480px] w-full">
                 <Image
                   src={slide.image}
                   alt={`GIVA Jewelry - ${slide.title}`}
@@ -249,7 +285,7 @@ export default function Home() {
             {loading ? (
               // Skeleton for categories
               [...Array(5)].map((_, index) => (
-                <div key={index} className="flex-shrink-0 flex flex-col items-center w-1/3 sm:w-auto md:w-auto animate-pulse">
+                <div key={index} className="flex-shrink-0 flex flex-col items-center w-1/3 sm:w-auto md:w-auto animate-pulse mx-1">
                   <div className="w-[100px] h-[100px] sm:w-[100px] sm:h-[100px] md:w-[250px] md:h-[250px] flex items-center justify-center mb-2 overflow-hidden rounded-full bg-gray-200 mx-auto"></div>
                   <div className="h-4 bg-gray-200 rounded w-20 mx-auto"></div>
                 </div>
@@ -260,7 +296,7 @@ export default function Home() {
                 <Link
                   href={`/collections/${category.slug}`}
                   key={index}
-                  className="flex-shrink-0 flex flex-col items-center w-1/3 sm:w-auto md:w-auto"
+                  className="flex-shrink-0 flex flex-col items-center w-1/3 sm:w-auto md:w-auto mx-1"
                 >
                   <div className="w-[100px] h-[100px] sm:w-[100px] sm:h-[100px] md:w-[250px] md:h-[250px] flex items-center justify-center mb-2 overflow-hidden rounded-full bg-gray-50 mx-auto">
                     <Image
@@ -301,25 +337,65 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Shop By Price */}
+      <div className="bg-white py-8">
+        <div className="mx-auto max-w-6xl px-4">
+          <h2 className="mb-6 text-center text-2xl font-bold">Shop By Price</h2>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 rounded-lg p-8 gap-8">
+            {shopByPrice?.map((item, index) => (
+              <div key={item.id} className="overflow-hidden rounded-lg cursor-pointer">
+                <Link href={`/collections/${item.slug}`}>
+                  <Image
+                    src={item.image}
+                    alt={`Giva ${item.id}`}
+                    width={300}
+                    height={300}
+                    className="h-auto w-full"
+                  />
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Banner */}
       <div className="bg-gradient-to-r from-pink-100 to-pink-200 py-6">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 md:flex-row">
-          <div className="text-center md:text-left">
-            <h2 className="text-2xl font-bold text-pink-800">Mother&rsquo;s Day Special</h2>
-            <p className="mt-2 text-pink-700">Celebrate with our exclusive collection</p>
-            <Link href={`/collections/mothers-day-special`}>
-              <button className="mt-4 rounded-full bg-pink-600 px-6 py-2 font-medium text-white hover:bg-pink-700 cursor-pointer">
-                Shop Now
-              </button>
-            </Link>
-          </div>
-          <Image
-            src="https://www.giva.co/cdn/shop/files/Frame_1000009460_1.jpg?v=1744794541&width=1500"
-            alt="Mother&rsquo;s Day Special"
-            width={600}
-            height={600}
-            className="h-auto w-full max-w-xs rounded-lg object-cover"
-          />
+        <div className="mx-auto max-w-6xl px-4">
+          {festivals && festivals.length > 0 && (
+            <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+              <div className="text-center md:text-left">
+                <h2 className="text-2xl font-bold text-pink-800">{festivals[activeFestival]?.title || "Festival Special"}</h2>
+                <p className="mt-2 text-pink-700">{festivals[activeFestival]?.description || "Celebrate with our exclusive collection"}</p>
+                <Link href={`/collections/${festivals[activeFestival]?.slug || "festival-special"}`}>
+                  <button className="mt-4 rounded-full bg-pink-600 px-6 py-2 font-medium text-white hover:bg-pink-700 cursor-pointer">
+                    Shop Now
+                  </button>
+                </Link>
+              </div>
+              <div className="relative h-[300px] w-full max-w-md overflow-hidden rounded-lg">
+                {festivals[activeFestival]?.images && festivals[activeFestival].images.length > 0 && (
+                  <Image
+                    src={festivals[activeFestival].images[activeImage] || "https://www.giva.co/cdn/shop/files/Frame_1000009460_1.jpg?v=1744794541&width=1500"}
+                    alt={festivals[activeFestival]?.title || "Festival Special"}
+                    fill
+                    className="object-cover transition-opacity duration-500"
+                    sizes="(max-width: 768px) 100vw, 600px"
+                  />
+                )}
+                <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                  {festivals[activeFestival]?.images && festivals[activeFestival].images.map((_, index) => (
+                    <button
+                      key={index}
+                      className={`h-2 w-2 rounded-full ${index === activeImage ? 'bg-white' : 'bg-white/50'}`}
+                      onClick={() => setActiveImage(index)}
+                      aria-label={`View image ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

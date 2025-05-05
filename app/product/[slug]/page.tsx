@@ -176,28 +176,40 @@ export default function ProductPage({ params }: { params: any }) {
 
   return (
     <div className="min-h-screen bg-white">
-      <main className="container mx-auto px-20 py-8">
-        <div className="mb-6">
-          <nav className="flex text-sm">
+      <style jsx global>{`
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .scrollbar-hide {
+          -ms-overflow-style: none;  /* IE and Edge */
+          scrollbar-width: none;  /* Firefox */
+        }
+      `}</style>
+      <main className="container mx-auto px-4 md:px-20 py-4 md:py-8">
+        <div className="mb-4 md:mb-6">
+          <nav className="flex text-xs md:text-sm overflow-x-auto whitespace-nowrap">
             <Link href="/" className="text-gray-500 hover:text-pink-500">Home</Link>
             <span className="mx-2 text-gray-400">/</span>
             <Link href="/collections/all" className="text-gray-500 hover:text-pink-500">Collections</Link>
             <span className="mx-2 text-gray-400">/</span>
-            <span className="text-gray-900">{product.name}</span>
+            <span className="text-gray-900 truncate">{product.name}</span>
           </nav>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 mb-8 md:mb-16">
           {/* Product Images */}
           <div className="relative">
             {/* Image with navigation arrows */}
             <div className="relative aspect-square overflow-hidden bg-gray-100 rounded-lg">
               <button 
                 onClick={() => setSelectedImage((selectedImage - 1 + product.images.length) % product.images.length)}
-                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full shadow-md p-2"
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full shadow-md p-1.5 md:p-2"
                 aria-label="Previous image"
               >
-                <ChevronLeft className="h-5 w-5 text-gray-600" />
+                <ChevronLeft className="h-4 w-4 md:h-5 md:w-5 text-gray-600" />
               </button>
               
               <Image 
@@ -211,20 +223,20 @@ export default function ProductPage({ params }: { params: any }) {
               
               <button 
                 onClick={() => setSelectedImage((selectedImage + 1) % product.images.length)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full shadow-md p-2"
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full shadow-md p-1.5 md:p-2"
                 aria-label="Next image"
               >
-                <ChevronRight className="h-5 w-5 text-gray-600" />
+                <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-gray-600" />
               </button>
             </div>
             
             {/* Thumbnail navigation */}
-            <div className="flex space-x-2 overflow-x-auto mt-4 pb-2">
+            <div className="flex space-x-2 overflow-x-auto mt-3 md:mt-4 pb-2 scrollbar-hide">
               {product.images.map((image, index) => (
                 <button 
                   key={index}
                   onClick={() => setSelectedImage(index)}
-                  className={`relative h-16 w-16 flex-shrink-0 rounded-md overflow-hidden cursor-pointer ${
+                  className={`relative h-14 w-14 md:h-16 md:w-16 flex-shrink-0 rounded-md overflow-hidden cursor-pointer ${
                     selectedImage === index ? 'ring-2 ring-pink-500' : 'ring-1 ring-gray-200'
                   }`}
                 >
@@ -241,20 +253,20 @@ export default function ProductPage({ params }: { params: any }) {
           </div>
 
           {/* Product Info */}
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6 mt-4 md:mt-0">
             {/* Price and Share Icons */}
             <div className="flex items-center justify-between">
-              <div className="flex items-baseline">
-                <span className="text-3xl font-medium text-gray-900">₹{product.price.toLocaleString()}</span>
-                <span className="ml-2 text-sm text-gray-500">MRP ₹{product.originalPrice.toLocaleString()} <span className="text-xs">(incl. of all taxes)</span></span>
+              <div className="flex flex-col md:flex-row md:items-baseline">
+                <span className="text-2xl md:text-3xl font-medium text-gray-900">₹{product.price.toLocaleString()}</span>
+                <span className="md:ml-2 text-xs md:text-sm text-gray-500">MRP ₹{product.originalPrice.toLocaleString()} <span className="text-xs">(incl. of all taxes)</span></span>
               </div>
               <div className="flex space-x-2">
-                <button className="p-2 bg-white rounded-full hover:bg-gray-100 cursor-pointer" onClick={() => setOpen(true)}>
-                  <Share2 className="h-5 w-5 text-gray-500" />
+                <button className="p-1.5 md:p-2 bg-white rounded-full hover:bg-gray-100 cursor-pointer" onClick={() => setOpen(true)}>
+                  <Share2 className="h-4 w-4 md:h-5 md:w-5 text-gray-500" />
                 </button>
-                <button className="p-2 bg-white rounded-full hover:bg-gray-100 cursor-pointer" onClick={handleWishlistToggle}>
+                <button className="p-1.5 md:p-2 bg-white rounded-full hover:bg-gray-100 cursor-pointer" onClick={handleWishlistToggle}>
                   <Heart 
-                    className={`h-5 w-5 ${isInWishlist ? 'text-pink-500' : 'text-gray-500'}`} 
+                    className={`h-4 w-4 md:h-5 md:w-5 ${isInWishlist ? 'text-pink-500' : 'text-gray-500'}`} 
                     fill={isInWishlist ? '#EC4899' : 'none'}
                   />
                 </button>
@@ -262,33 +274,33 @@ export default function ProductPage({ params }: { params: any }) {
             </div>
             
             {/* Product Title */}
-            <h1 className="text-2xl font-medium text-gray-900">{product.name}</h1>
+            <h1 className="text-xl md:text-2xl font-medium text-gray-900">{product.name}</h1>
             
             {/* Pure Silver text */}
-            <p className="text-gray-700">Made With Pure 925 Silver</p>
+            <p className="text-sm md:text-base text-gray-700">Made With Pure 925 Silver</p>
             
             {/* Rating */}
             <div className="flex items-center space-x-2">
-              <div className="flex">
-                <Star className="w-5 h-5 text-amber-400 fill-amber-400" />
-                <span className="ml-1 text-amber-700 font-medium">{product.rating}</span>
+              <div className="flex items-center">
+                <Star className="w-4 h-4 md:w-5 md:h-5 text-amber-400 fill-amber-400" />
+                <span className="ml-1 text-sm md:text-base text-amber-700 font-medium">{product.rating}</span>
               </div>
-              <span className="text-gray-500">| {product.reviewCount}</span>
+              <span className="text-xs md:text-sm text-gray-500">| {product.reviewCount}</span>
             </div>
             
             {/* Finish Options */}
-            <div className="space-y-3">
-              <h3 className="text-lg font-medium text-gray-900">Choose Your Finish</h3>
-              <div className="flex space-x-4">
+            <div className="space-y-2 md:space-y-3">
+              <h3 className="text-base md:text-lg font-medium text-gray-900">Choose Your Finish</h3>
+              <div className="flex space-x-3 md:space-x-4">
                 {finishOptions.map(option => (
                   <button
                     key={option.id}
                     onClick={() => setSelectedFinish(option.id)}
-                    className={`border rounded-lg p-2 w-24 flex flex-col items-center cursor-pointer ${
+                    className={`border rounded-lg p-1.5 md:p-2 w-20 md:w-24 flex flex-col items-center cursor-pointer ${
                       selectedFinish === option.id ? 'border-pink-500' : 'border-gray-200'
                     }`}
                   >
-                    <div className="w-16 h-16 relative mb-2">
+                    <div className="w-14 h-14 md:w-16 md:h-16 relative mb-1 md:mb-2">
                       <Image 
                         src={option.image} 
                         alt={option.name}
@@ -303,19 +315,19 @@ export default function ProductPage({ params }: { params: any }) {
             </div>
             
             {/* Delivery Estimate */}
-            <div className="space-y-3 pt-4 border-t border-gray-100">
-              <h3 className="text-lg font-medium text-gray-900">Estimated Delivery Time</h3>
+            <div className="space-y-2 md:space-y-3 pt-3 md:pt-4 border-t border-gray-100">
+              <h3 className="text-base md:text-lg font-medium text-gray-900">Estimated Delivery Time</h3>
               <div className="flex">
                 <input
                   type="text"
                   placeholder="Enter 6 digit pincode"
                   value={pincode}
                   onChange={(e) => setPincode(e.target.value)}
-                  className="flex-grow border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-pink-500"
+                  className="flex-grow border border-gray-300 rounded-l-md px-2 md:px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-pink-500"
                 />
                 <button
                   onClick={checkDelivery}
-                  className="bg-pink-50 border border-pink-500 text-pink-600 font-medium px-4 py-2 rounded-r-md hover:bg-pink-100 cursor-pointer"
+                  className="bg-pink-50 border border-pink-500 text-pink-600 font-medium px-3 md:px-4 py-2 rounded-r-md hover:bg-pink-100 cursor-pointer text-sm"
                 >
                   Check
                 </button>
@@ -323,11 +335,11 @@ export default function ProductPage({ params }: { params: any }) {
             </div>
             
             {/* Features */}
-            <div className="grid grid-cols-2 gap-4 pt-4">
+            <div className="grid grid-cols-2 gap-3 md:gap-4 pt-3 md:pt-4">
               {features.map(feature => (
                 <div key={feature.id} className="flex items-center">
-                  <span className="text-xl mr-2">{feature.icon}</span>
-                  <span className="text-sm text-gray-700">{feature.name}</span>
+                  <span className="text-lg md:text-xl mr-2">{feature.icon}</span>
+                  <span className="text-xs md:text-sm text-gray-700">{feature.name}</span>
                 </div>
               ))}
             </div>
@@ -339,23 +351,23 @@ export default function ProductPage({ params }: { params: any }) {
                 id="gift-wrap"
                 className="h-4 w-4 rounded border-gray-300 text-pink-600 focus:ring-pink-500 cursor-pointer"
               />
-              <label htmlFor="gift-wrap" className="text-sm text-gray-700">
+              <label htmlFor="gift-wrap" className="text-xs md:text-sm text-gray-700">
                 Add <span className="text-pink-600">gift wrap</span> to your order (₹50)
               </label>
             </div>
             
             {/* Add to Cart and Buy Now Buttons */}
-            <div className="flex space-x-4 pt-4">
+            <div className="flex space-x-3 md:space-x-4 pt-3 md:pt-4 sticky bottom-0 md:relative bg-white py-3 md:py-0 -mx-4 md:mx-0 px-4 md:px-0 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] md:shadow-none">
               <button
                 onClick={handleAddToCart}
-                className="flex-1 bg-white border border-pink-500 text-pink-600 py-2 rounded-md hover:bg-pink-50 transition-colors cursor-pointer"
+                className="flex-1 bg-white border border-pink-500 text-pink-600 py-2 rounded-md hover:bg-pink-50 transition-colors cursor-pointer text-sm md:text-base"
               >
                 Buy Now
               </button>
               
               <button
                 onClick={handleAddToCart}
-                className={`flex-1 py-2 rounded-md transition-colors cursor-pointer ${
+                className={`flex-1 py-2 rounded-md transition-colors cursor-pointer text-sm md:text-base ${
                   quantityCart > 0 
                     ? 'bg-pink-100 text-pink-600 border border-pink-500 hover:bg-pink-200' 
                     : 'bg-pink-500 text-white hover:bg-pink-600'
@@ -366,15 +378,15 @@ export default function ProductPage({ params }: { params: any }) {
             </div>
             
             {/* Product Description */}
-            <div className="pt-6 border-t border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900 mb-3">Product Description</h3>
-              <p className="text-gray-700">{product.description}</p>
+            <div className="pt-4 md:pt-6 border-t border-gray-200">
+              <h3 className="text-base md:text-lg font-medium text-gray-900 mb-2 md:mb-3">Product Description</h3>
+              <p className="text-sm md:text-base text-gray-700">{product.description}</p>
             </div>
             
             {/* Specifications */}
             <div className="space-y-1">
-              <h3 className="text-lg font-medium text-gray-900 mb-2">Specifications:</h3>
-              <ul className="list-disc pl-5 text-sm text-gray-700 space-y-1">
+              <h3 className="text-base md:text-lg font-medium text-gray-900 mb-1 md:mb-2">Specifications:</h3>
+              <ul className="list-disc pl-5 text-xs md:text-sm text-gray-700 space-y-1">
                 {product.specs.map((spec, index) => (
                   <li key={index}>{spec}</li>
                 ))}
@@ -384,42 +396,42 @@ export default function ProductPage({ params }: { params: any }) {
         </div>
 
         {/* Customer Reviews Section */}
-        <div className="mt-16 border-t border-gray-200 pt-10">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Customer Reviews</h2>
+        <div className="mt-10 md:mt-16 border-t border-gray-200 pt-6 md:pt-10">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 md:mb-6">
+            <h2 className="text-xl md:text-2xl font-bold mb-2 md:mb-0">Customer Reviews</h2>
             <div className="flex items-center">
-              <Star className="w-5 h-5 text-yellow-400 fill-yellow-400 mr-1" />
-              <span className="text-lg font-medium">{product.rating}</span>
-              <span className="text-gray-500 ml-2">({product.reviewCount} reviews)</span>
+              <Star className="w-4 h-4 md:w-5 md:h-5 text-yellow-400 fill-yellow-400 mr-1" />
+              <span className="text-base md:text-lg font-medium">{product.rating}</span>
+              <span className="text-xs md:text-sm text-gray-500 ml-1 md:ml-2">({product.reviewCount} reviews)</span>
             </div>
           </div>
           
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6">
             {visibleReviews.map(review => (
-              <div key={review.id} className="bg-gray-100 p-4 rounded-lg">
-                <div className="flex justify-between mb-2">
-                  <h3 className="font-medium">{review.title}</h3>
-                  <span className="text-gray-500 text-sm">{review.date}</span>
+              <div key={review.id} className="bg-gray-100 p-3 md:p-4 rounded-lg">
+                <div className="flex justify-between mb-1 md:mb-2">
+                  <h3 className="text-sm md:text-base font-medium">{review.title}</h3>
+                  <span className="text-xs md:text-sm text-gray-500">{review.date}</span>
                 </div>
-                <div className="flex items-center mb-2">
+                <div className="flex items-center mb-1 md:mb-2">
                   <div className="flex mr-2">
                     {[...Array(5)].map((_, i) => (
                       <Star 
                         key={i} 
-                        className={`w-4 h-4 ${i < review.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} 
+                        className={`w-3 h-3 md:w-4 md:h-4 ${i < review.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} 
                       />
                     ))}
                   </div>
-                  <span className="text-sm font-medium">{review.name}</span>
+                  <span className="text-xs md:text-sm font-medium">{review.name}</span>
                 </div>
-                <p className="text-gray-700 text-sm">{review.comment}</p>
+                <p className="text-xs md:text-sm text-gray-700">{review.comment}</p>
                 {/* Product Image for Review */}
                 <div className="mt-2">
                   <Image 
                     src={product.image} 
                     alt={`Image for review by ${review.name}`} 
-                    width={100} 
-                    height={100} 
+                    width={80} 
+                    height={80}
                     className="rounded-md"
                   />
                 </div>
@@ -429,7 +441,7 @@ export default function ProductPage({ params }: { params: any }) {
             {reviews.length > 2 && (
               <button 
                 onClick={() => setShowAllReviews(!showAllReviews)}
-                className="text-pink-600 font-medium hover:text-pink-700 cursor-pointer"
+                className="text-pink-600 text-sm md:text-base font-medium hover:text-pink-700 cursor-pointer"
               >
                 {showAllReviews ? 'Show Less Reviews' : 'View All Reviews'}
               </button>
@@ -438,9 +450,9 @@ export default function ProductPage({ params }: { params: any }) {
         </div>
 
         {/* Related Products Section */}
-        <div className="mt-16 border-t border-gray-200 pt-10">
-          <h2 className="text-2xl font-bold mb-8">You May Also Like</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="mt-10 md:mt-16 border-t border-gray-200 pt-6 md:pt-10">
+          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-8">You May Also Like</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {relatedProducts.map(relatedProduct => (
               <ProductCard
                 key={relatedProduct.id}
